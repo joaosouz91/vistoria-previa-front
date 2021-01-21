@@ -1,0 +1,10 @@
+<p-panel>
+    <p-header><b>Vistoria</b></p-header>
+    <app-laudo-visualizar-tabs [codigoLaudo]="CODIGO_LVPRE"></app-laudo-visualizar-tabs>
+    <p-footer>
+        <div class="text-right">
+            <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar"
+            [routerLink]="['/laudo-vistoria']" [state]="{filtroLaudo:filtroLaudo}" *ngIf="filtroLaudo"></button>
+        </div>
+    </p-footer>
+</p-panel>

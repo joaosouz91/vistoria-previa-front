@@ -1,0 +1,104 @@
+<p-panel [style]="{'width':'500px', 'margin':'0 auto'}">
+    <p-header><b>Agendamentos - Status/Local</b></p-header>
+
+    <div class="ui-fluid">
+        <div class="ui-g">
+
+            <div class="ui-g-12 ui-md-12">
+
+                <div class="ui-g-12 ui-md-12">
+                    <app-simple-date-picker (onMonthChange)="updateSelectedDate($event)"></app-simple-date-picker>
+                </div>
+
+                <div class="ui-g-12 ui-md-12">
+                    <div class="ui-inputgroup">
+                        <span class="ui-inputgroup-addon"><i class="pi pi-user"></i></span>
+                        <input type="text" pInputText placeholder="Corretor" [(ngModel)]="inputCorretor" disabled>
+                        <button id="disabled-btn" type="button" (click)="changeModalVisibility()" pButton
+                            label="Escolher"></button>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="ui-g-9"></div>
+                <div class="ui-g-3" [style]="{'text-align':'right'}">
+                    <button type="button" pButton label="Pesquisar" [disabled]="!requiredFilled" (click)="onPesquisar()"
+                        icon="pi pi-search" class="ui-button-text ui-clickable"></button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <p-table [value]="agendamentosStatusLocalList" [responsive]="true" [paginator]="true" [rows]="10" class="m-5"
+        [autoLayout]="true" *ngIf="agendamentosStatusLocalList != null">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Status</th>
+                <th>Tipo</th>
+                <th>Quantidade</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{ traduzirStatus(item.cdSitucAgmto) }}</td>
+                <td>{{ item.tipoAgendamento == 'D' ? 'Domicílio' : 'Posto' }}</td>
+                <td>{{ item.quantidadeSituacaoStatus }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- /// MODAL /// -->
+    <p-dialog position="top" [(visible)]="modalCorretorVisible" modal="true" dismissableMask="true" [draggable]="false"
+        [style]="{'max-width': '600px'}" appendTo="body">
+        <p-header>
+            Pesquisa de Corretores
+        </p-header>
+
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="p-grid">
+                    <div class="p-col-2">
+                        <p-dropdown appendTo="body" [options]="comboTipoPesquisaCorretor"
+                            [(ngModel)]="tipoPesquisaCorretor" autoWidth="false"></p-dropdown>
+                    </div>
+
+                    <div class="p-col-8">
+                        <input type="text" pInputText placeholder="Digite os termos da pesquisa"
+                            [(ngModel)]="termoPesquisaCorretor">
+                    </div>
+
+                    <div class="p-col-2" [style]="{'display': 'flex', 'align-items': 'center'}">
+                        <button type="button" [style]="{'display': 'flex', 'align-items': 'center'}" pButton label="Pesquisar" (click)="onPesquisarCorretor()"
+                            icon="pi pi-search" class="ui-button-text ui-clickable"></button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <p-table class="m-12" [value]="corretorList" [responsive]="true" [paginator]="true" [rows]="10" appendTo="body"
+                    [autoLayout]="true" selectionMode="single"
+                    [(selection)]="selectedCorretor" (onRowSelect)="onRowSelectCorretor($event)" dataKey="key">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Código Corretor</th>
+                            <th>Nome Corretor</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-item>
+                        <tr [pSelectableRow]="item">
+                            <td>{{ item.idCorretor }}</td>
+                            <td>{{ item.nomeCorretor }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+
+        </div>
+
+    </p-dialog>
+
+</p-panel>

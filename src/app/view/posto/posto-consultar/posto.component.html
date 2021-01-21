@@ -1,0 +1,126 @@
+<p-panel>
+  <p-header><b>Listagem de Postos</b></p-header>
+  <p-footer *ngIf="codigoPrestadora">
+    <div class="text-right">
+      <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+        label="Voltar" (click)="voltar()"></button>
+    </div>
+  </p-footer>
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-12">
+      <p-fieldset>
+        <p-header>Consulta de Postos</p-header>
+        <div class="ui-g ui-fluid">
+          <div class="ui-g-12 ui-md-2" *ngIf="codigoPrestadora">
+            <label class="label">Nome do Posto:</label>
+            <input name="nomePosto" type="text" pInputText [(ngModel)]="filtro.nome" />
+          </div>
+          <div class="ui-g-12 ui-md-2">
+            <label class="label">Estado:</label>
+            <p-dropdown name="uf" appendTo="body" [options]="ufs" styleClass="w-100" (onChange)="carregarCidades()"
+              [(ngModel)]="filtro.uf" [filter]="true"></p-dropdown>
+          </div>
+          <div class="ui-g-12 ui-md-2">
+            <label class="label">Cidade:</label>
+            <p-dropdown name="cidade" appendTo="body" [options]="cidades" styleClass="w-100"
+              (onChange)="carregarBairros()" [(ngModel)]="filtro.cidade" [filter]="true"></p-dropdown>
+          </div>
+          <div class="ui-g-12 ui-md-2">
+            <label class="label">Bairro:</label>
+            <p-dropdown name="bairro" appendTo="body" [options]="bairros" styleClass="w-100" [(ngModel)]="filtro.bairro"
+              [filter]="true"></p-dropdown>
+          </div>
+          <div class="ui-g-12 ui-md-3 d-inline-flex">
+            <button type="button" pButton title="Pesquisar" label="Pesquisar" icon="pi pi-search"
+              class="ui-button-secondary align-self-end" style="width: 130px" (click)="pesquisar()"></button>
+          </div>
+        </div>
+      </p-fieldset>
+      <p-table [value]="postos" [responsive]="true" [paginator]="true" [rows]="pagination.size"
+        [totalRecords]="totalRegistros" [lazy]="true" (onLazyLoad)="loadPostosLazy($event)"
+        [lazyLoadOnInit]="codigoPrestadora" class="m-5">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome do Posto</th>
+            <ng-template [ngIf]="!codigoPrestadora">
+              <th>Prestadora</th>
+              <th>Endereço</th>
+            </ng-template>
+            <th>Bairro</th>
+            <th style="width: 100px;text-align: center;">Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.nome }}</td>
+            <ng-template [ngIf]="!codigoPrestadora">
+              <td>{{item?.prestadora?.razaoSocial}}</td>
+              <td>{{item.logradouro}}</td>
+            </ng-template>
+            <td>{{ item.bairro }}</td>
+            <td style="text-align: center;">
+              <button *ngIf="codigoPrestadora" type="button" pButton class="ui-button-secondary mr-1"
+                title="Editar Posto" icon="pi pi-pencil"
+                [routerLink]="['/posto', item.codigoPosto, 'prestadora', codigoPrestadora]"></button>
+              <button type="button" pButton class="ui-button-secondary mr-1" title="Visualizar Posto"
+                icon="pi pi-search" (click)="exibirPosto(item)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-panel>
+<p-dialog header="Posto" [(visible)]="exibirDialog" [modal]="true" [responsive]="true" [style]="{width: '750px'}"
+  appendTo="body" position="top">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-12">
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Código do Posto:</label>
+        <span class="ui-g-4">{{posto?.codigoPosto}}</span>
+        <label class="font-weight-bold ui-g-2">Nome do Posto:</label>
+        <span class="ui-g-4">{{posto?.nome}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Prestadora:</label>
+        <span class="ui-g-4">{{posto?.prestadora?.codigoPrestadora}} - {{posto?.prestadora?.razaoSocial}}</span>
+        <label class="font-weight-bold ui-g-2">Endereço:</label>
+        <span class="ui-g-4">{{posto?.logradouro}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Bairro:</label>
+        <span class="ui-g-4">{{posto?.bairro}}</span>
+        <label class="font-weight-bold ui-g-2">Cidade:</label>
+        <span class="ui-g-4">{{posto?.cidade}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">UF:</label>
+        <span class="ui-g-4">{{posto?.uf}}</span>
+        <label class="font-weight-bold ui-g-2">CEP:</label>
+        <span class="ui-g-4">{{posto?.cep}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Telefone:</label>
+        <span class="ui-g-4">{{posto?.telefone}}</span>
+        <label class="font-weight-bold ui-g-2">Horário do Posto:</label>
+        <span class="ui-g-4">{{posto?.funcionamento}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Referência:</label>
+        <span class="ui-g-4">{{posto?.logradouroReferencia}}</span>
+        <label class="font-weight-bold ui-g-2">E-mail:</label>
+        <span class="ui-g-4">{{posto?.email}}</span>
+      </div>
+      <div class="row col-12">
+        <label class="font-weight-bold ui-g-2">Ativo:</label>
+        <span class="ui-g-4">{{posto?.ativo ? 'Sim' : 'Não'}}</span>
+        <label class="font-weight-bold ui-g-3">Atende Veículo Carga:</label>
+        <span class="ui-g-3">{{posto?.atendeVeiculoCarga ? 'Sim' : 'Não'}}</span>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-times" (click)="fechar()" label="fechar"
+      class="p-button-secondary"></button>
+  </p-footer>
+</p-dialog>

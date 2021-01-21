@@ -1,0 +1,215 @@
+<form #form="ngForm" class="form-group">
+        <p-panel>
+
+                <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                                <p-fieldset>
+                                        <p-header>Detalhe da Empresa Franquia</p-header>
+                                        <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+
+                                                <div class="ui-g-3">
+                                                        <label for="codigo" class="label">Código Empresa</label>
+                                                        <input pInputText name="codigo" type="text" maxlength="3" ngModel required 
+                                                                [(ngModel)]="franquia.codigo" [disabled]="isEdicao" />
+                                                </div>
+
+                                                <div class="ui-g-3">
+                                                        <label for="prestadora" class="label">PRESTADORA</label>
+                                                        <p-dropdown name="prestadora" [(options)]="prestadoras"
+                                                                [(ngModel)]="franquia.cdAgrmtVspre" styleClass="w-100">
+                                                        </p-dropdown>
+                                                </div>
+
+                                                <div class="ui-g-4">
+                                                        <label for="tipoPessoa" class="label">Tipo Pessoa:</label>
+                                                        <p-selectButton name="tipoPessoa" [options]="tiposPessoa"
+                                                                [(ngModel)]="franquia.tipoPessoa">
+                                                        </p-selectButton>
+                                                </div>
+
+
+                                                <div class="ui-g-12">
+                                                        <div *ngIf="franquia.tipoPessoa === 'F'; else elseAgeBlock">
+                                                                <label for="cpf" class="label">CPF:</label>
+                                                                <p-inputMask name="cpf" type="text"
+                                                                        [(ngModel)]="franquia.cpfCnpj" unmask="true" ngModel required 
+                                                                        mask="999.999.999-99"></p-inputMask>
+
+                                                        </div>
+                                                        <ng-template #elseAgeBlock>
+                                                                <label for="cnpj" class="label">CNPJ:</label>
+                                                                <p-inputMask name="cnpj" type="text"
+                                                                        [(ngModel)]="franquia.cpfCnpj" unmask="true"
+                                                                        mask='99.999.999/9999-99'></p-inputMask>
+                                                        </ng-template>
+                                                </div>
+
+
+
+                                                <vp-input-container class="ui-g-12" erroMessage="campo obrigatório"
+                                                        label="Razão Social">
+                                                        <input pInputText name="razaoSocial" type="text" ngModel required 
+                                                                maxlength="40" [(ngModel)]="franquia.nome"
+                                                                autocomplete="off" />
+                                                                
+                                                </vp-input-container>
+
+
+
+                                                <vp-input-container class="ui-g-3" erroMessage="campo obrigatório"
+                                                        label="Usuário Últ Alter:">
+                                                        <input pInputText name="usr" type="text" ngModel required
+                                                                maxlength="8"
+                                                                [(ngModel)]="franquia.usuarioUltimaAlteracao"
+                                                                autocomplete="off" />
+                                                </vp-input-container>
+
+
+
+                                                <vp-input-container class="ui-g-3" label="Contato">
+                                                        <input pInputText name="contato" type="text" ngModel
+                                                                maxlength="40" [(ngModel)]="franquia.contato"
+                                                                autocomplete="off" />
+                                                </vp-input-container>
+
+
+                                                <vp-input-container class="ui-g-1" label="DDD">
+                                                        <input pInputText name="ddd" type="text" ngModel maxlength="4"
+                                                                [(ngModel)]="franquia.dddTel" autocomplete="off" />
+                                                </vp-input-container>
+
+
+
+                                                <vp-input-container class="ui-g-3" label="Telefone">
+                                                        <input pInputText name="tel" type="text" ngModel maxlength="24"
+                                                                [(ngModel)]="franquia.telEmpresa" autocomplete="off" />
+                                                </vp-input-container>
+
+                                                <vp-input-container class="ui-g-2" label="Ramal">
+                                                        <input pInputText name="ramal" type="text" ngModel maxlength="5"
+                                                                [(ngModel)]="franquia.ramal" autocomplete="off" />
+                                                </vp-input-container>
+
+
+                                                <vp-input-container class="ui-g-12" label="email">
+                                                        <input pInputText name="email" type="text" ngModel
+                                                                maxlength="100" [(ngModel)]="franquia.email"
+                                                                autocomplete="off" />
+                                                </vp-input-container>
+
+
+                                                <vp-input-container class="ui-g-4" label="Quantidade KM Franquiado"
+                                                        erroMessage="Campo Obrigatório">
+                                                        <input pInputText name="kmfranq" type="text" ngModel required
+                                                                maxlength="6" [(ngModel)]="franquia.qtKmFrqdo"
+                                                                autocomplete="off" />
+                                                </vp-input-container>
+
+                                        </div>
+
+                                        <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+
+                                                        <div class="ui-g-12">
+                                                                        <div class="ui-g-6">
+                                                                                <p-fieldset legend="Pagamento/KM Rodado">
+                                                                                        <div class="ui-g-12">
+                                                                                                <p-radioButton name="pagKm" value="S"
+                                                                                                        label="SIM"
+                                                                                                        [(ngModel)]="franquia.pagKmRodado"
+                                                                                                        inputId="preopt1">
+                                                                                                </p-radioButton>
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <p-radioButton name="pagKm" value="N"
+                                                                                                        label="NÃO"
+                                                                                                        [(ngModel)]="franquia.pagKmRodado"
+                                                                                                        inputId="preopt2">
+                                                                                                </p-radioButton>
+                                                                                        </div>
+                                                                                </p-fieldset>
+                                                                        </div>
+                
+                                                                        <div class="ui-g-6">
+                                                                                <p-fieldset legend="Situação">
+                                                                                        <div class="ui-g-12">
+                                                                                                <p-radioButton name="situacao" value="1"
+                                                                                                        label="Ativo"
+                                                                                                        [(ngModel)]="franquia.ativo"
+                                                                                                        inputId="preopt1">
+                                                                                                </p-radioButton>
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <p-radioButton name="situacao" value="0"
+                                                                                                        label="Inativo"
+                                                                                                        [(ngModel)]="franquia.ativo"
+                                                                                                        inputId="preopt2">
+                                                                                                </p-radioButton>
+                                                                                        </div>
+                                                                                </p-fieldset>
+                                                                        </div>
+                                                                </div>
+                                                <div class="ui-g-12">
+                                                        <label for="logradouro" class="label">Logradouro:</label>
+                                                        <input pInputText name="logradouro" type="text"
+                                                                [(ngModel)]="franquia.logradouro" />
+                                                </div>
+
+                                                <div class="ui-g-2">
+                                                        <label for="numero" class="label">Número:</label>
+                                                        <input pInputText name="numero" type="text"
+                                                                [(ngModel)]="franquia.numLogradouro" />
+                                                </div>
+
+                                                <div class="ui-g-5">
+                                                        <label for="complemento" class="label">Complemento:</label>
+                                                        <input pInputText name="complemento" type="text"
+                                                                [(ngModel)]="franquia.dsCmploLogra" />
+                                                </div>
+
+                                                <div class="ui-g-5">
+                                                        <label for="cep" class="label">CEP:</label>
+                                                        <input pInputText name="cep" type="text"
+                                                                [(ngModel)]="franquia.cep" />
+                                                </div>
+
+                                                <div class="ui-g-5">
+                                                        <label for="bairro" class="label">Bairro:</label>
+                                                        <input pInputText name="bairro" type="text"
+                                                                [(ngModel)]="franquia.bairro" />
+                                                </div>
+
+                                                <div class="ui-g-3">
+                                                        <label for="estado" class="label">Estado:</label>
+                                                        <p-dropdown name="estado" [options]="ufs"
+                                                                [(ngModel)]="franquia.uf" styleClass="w-100">
+                                                        </p-dropdown>
+                                                </div>
+
+                                                <div class="ui-g-4">
+                                                        <label for="cidade" class="label">Cidade:</label>
+                                                        <input pInputText name="cidade" type="text"
+                                                                [(ngModel)]="franquia.cidade" />
+                                                </div>
+
+                                                
+                                        </div>
+                                </p-fieldset>
+                        </div>
+                </div>
+
+                <p-footer>
+                        <div class="text-right">
+                                <button type="button" pButton icon="pi pi-arrow-left"
+                                        class="ui-button-raised ui-button-secondary mr-2" label="Voltar"
+                                        [routerLink]="['/franquia']"></button>
+                                <button [disabled]="!form.valid" type="button" pButton icon="pi pi-save"
+                                        class="ui-button-raised ui-button-secondary mr-2" label="Salvar"
+                                        (click)="salvar()"></button>
+   
+                        </div>
+                </p-footer>
+
+
+        </p-panel>
+
+</form>

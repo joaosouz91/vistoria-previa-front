@@ -1,0 +1,36 @@
+<p-table [value]="vistoriaFrotaService.frota" [(selection)]="vistoriaFrotaService.itensFrotaSelecionados" dataKey="id"
+  [responsive]="true" [autoLayout]="true" scrollHeight="400px">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 3em">
+        <p-checkbox [binary]="true" (onChange)="onRowSelect($event)"></p-checkbox>
+      </th>
+      <th>Produto</th>
+      <th>Fabricante</th>
+      <th>Modelo Veículo</th>
+      <th>Placa</th>
+      <th>Chassi</th>
+      <th>Modelo</th>
+      <th>Zero KM</th>
+      <th>Situação</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+    <tr>
+      <td>
+        <p-tableCheckbox [value]="item" [index]="rowIndex" [disabled]="disabled(item)">
+        </p-tableCheckbox>
+      </td>
+      <td>{{ item.tipoVeiculo.descricao }}</td>
+      <td>{{ item.nomeFabricante }}</td>
+      <td>{{ item.nomeModelo }}</td>
+      <td>{{ item.placa }}</td>
+      <td>{{ item.chassi }}</td>
+      <td>{{ item.anoModelo }}</td>
+      <td>{{ item.zeroKM ? 'Sim' : 'Não' }}</td>
+      <td>
+        {{ item?.agendamento?.status?.situacao ? item?.agendamento?.status?.situacao?.descricao : 'Agendar' }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

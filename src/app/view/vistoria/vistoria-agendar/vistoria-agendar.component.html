@@ -1,0 +1,209 @@
+<p-confirmDialog [style]="{width: '400px'}" key="confirmarAgendamento" appendTo="body" position="top"></p-confirmDialog>
+<p-confirmDialog [style]="{width: '450px'}" key="confirmarEmpresa" appendTo="body" position="top"></p-confirmDialog>
+<p-dialog header="Selecione a Empresa desejada:" [(visible)]="displaySelecionarEmpresa" [modal]="true"
+  [responsive]="true" [style]="{width: '400px'}" appendTo="body" position="top">
+  <ng-template ngFor let-e [ngForOf]="empresasDistribuicao">
+    <p class="mt-2 mb-2">
+      <p-radioButton name="empresa" value="{{e.codigoPrestadora}}" label="{{e.razaoSocial}}"
+        [(ngModel)]="agendamento.codigoPrestadora"></p-radioButton>
+    </p>
+  </ng-template>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="displaySelecionarEmpresa=false;agendar()"
+      label="Agendar"></button>
+    <button type="button" pButton icon="pi pi-times" (click)="displaySelecionarEmpresa=false" label="Cancelar"
+      class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+<p-dialog header="Agendamento" [(visible)]="displayAgendamento" [modal]="true" [responsive]="true"
+  [style]="{width: '500px'}" [closable]="false" appendTo="body" position="top">
+  <ng-template ngFor let-e [ngForOf]="msgsAgendamento">
+    <div *ngIf="!e.error" class="ui-message ui-widget ui-corner-all ui-message-success ng-star-inserted w-100 mb-2">
+      <span class="ui-message-icon pi pi-check"></span>
+      <span class="ui-message-text">Aguardando confirmação do agendamento! Chassi: {{e.chassi}}. Número do Voucher:
+        {{e.voucher}}</span>
+    </div>
+    <div *ngIf="e.error" class="ui-message ui-widget ui-corner-all ui-message-error ng-star-inserted w-100 mb-2">
+      <span class="ui-message-icon pi pi-times"></span>
+      <span class="ui-message-text">{{e.error}}</span>
+    </div>
+  </ng-template>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-times" (click)="displayAgendamento=false;fechar()" label="Fechar"
+      class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog [style]="{width: '400px'}" key="verificarDivergenciaEndereco" appendTo="body" position="top"></p-confirmDialog>
+<p-panel *ngIf="vistoria">
+  <p-header><b>Agendamento Vistoria Prévia</b></p-header>
+  <p-footer>
+    <div class="text-right">
+      <button *ngIf="!modal" type="button" pButton icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+        label="Sair" [routerLink]="['/vistoria']"></button>
+      <button *ngIf="!modal" type="button" pButton icon="pi pi-times" class="ui-button-raised ui-button-secondary mr-2"
+        label="Cancelar" [routerLink]="['/vistoria']"></button>
+      <button type="button" pButton icon="pi pi-calendar-plus" class="ui-button-raised ui-button-secondary mr-2"
+        label="Agendar" (click)="confirmarAgendamento()"></button>
+    </div>
+  </p-footer>
+  <div class="p-grid">
+    <div class="p-col">
+      <p-fieldset>
+        <p-header>Dados do Cliente</p-header>
+        <div class="p-grid">
+          <label class="label label-1">Cliente:</label>
+          <span class="p-col-3 info">{{vistoria?.nomeCliente}}</span>
+          <label class="label label-2 label-lg-1">CPF/CNPJ:</label>
+          <span class="p-col-2 info">{{vistoria?.cpfCnpj | cpfCnpj}}</span>
+          <label for="emailCliente" class="label label-1">E-mail:</label>
+          <div class="p-col-3">
+            <input id="emailCliente" type="text" pInputText [(ngModel)]="vistoria.emailCliente" maxlength="100" />
+          </div>
+        </div>
+        <div class="p-grid" *ngIf="vistoria?.telefoneCliente">
+          <label class="label label-1">Telefone:</label>
+          <span class="p-col-11 info">{{vistoria?.telefoneCliente}}</span>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col">
+      <p-fieldset>
+        <p-header>Dados do Corretor</p-header>
+        <div class="p-grid">
+          <label class="label label-1">Corretor:</label>
+          <span class="p-col-4 p-lg-3 info">{{corretor?.idCorretor}} {{corretor?.nomeCorretor}}</span>
+          <label class="label">Deseja receber e-mail de confirmação ?:</label>
+          <p-radioButton name="emailConfirmacao" [value]="true" label="Sim" class="label" [(ngModel)]="isReceberEmail"
+            (click)="limparEmailsCorretor()">
+          </p-radioButton>
+          <p-radioButton name="emailConfirmacao" [value]="false" label="Não" class="label" [(ngModel)]="isReceberEmail"
+            (click)="limparEmailsCorretor()">
+          </p-radioButton>
+        </div>
+        <div class="p-grid">
+          <div class="p-col-4 p-lg-3">
+            <app-input-telefone labelClass="label label-3 label-lg-4" dddClass="p-col-3" class="p-grid"
+              (updateModel)="updateTelefonesCorretor($event)" [model]="corretor?.telefones"></app-input-telefone>
+          </div>
+          <div class="p-col-4 p-offset-1">
+            <app-input-email #inputEmailCorretor *ngIf="isReceberEmail" class="p-grid" labelClass="label label-2"
+              (updateModel)="updateEmailsCorretor($event)" [model]="corretor?.emails"></app-input-email>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col">
+      <p-fieldset>
+        <p-header>Dados da Vistoria</p-header>
+        <div class="p-grid">
+          <label class="label label-4">A Cidade da vistoria é a mesma do Cep de Risco/Pernoite?</label>
+          <p-radioButton name="isRiscoPerNoite" [value]="true" label="Sim" class="label" [(ngModel)]="isRiscoPerNoite"
+            (onClick)="resetRiscoPerNoite(true)">
+          </p-radioButton>
+          <p-radioButton name="isRiscoPerNoite" [value]="false" label="Não" class="label" [(ngModel)]="isRiscoPerNoite"
+            (onClick)="resetRiscoPerNoite(false)">
+          </p-radioButton>
+        </div>
+        <div class="p-grid">
+          <label class="label label-3 label-lg-2">Local da Vistoria:</label>
+          <div class="p-col-1">
+            <p-inputMask [(ngModel)]="logradouro.cep" mask="99999-999" unmask="true" placeholder="CEP"
+              [disabled]="isRiscoPerNoite" (change)="recuperarLogradouro()"></p-inputMask>
+          </div>
+          <div class="p-col-1">
+            <p-dropdown [(ngModel)]="logradouro.uf" appendTo="body" [options]="estados" (onChange)="findMunicipios()"
+              [disabled]="locais.length > 1" placeholder="UF"></p-dropdown>
+          </div>
+          <div class="p-col-3">
+            <p-dropdown [(ngModel)]="logradouro.idRegiao" appendTo="body" [options]="municipios" filter="true" resetFilterOnHide="true"
+              [disabled]="locais.length > 1" (onChange)="clearLocais()" placeholder="Cidade">
+            </p-dropdown>
+          </div>
+          <div class="p-col-1">
+            <button type="button" pButton icon="pi pi-search" class="ui-button-raised ui-button-secondary"
+              label="Buscar" (click)="showLocal()"></button>
+          </div>
+        </div>
+        <div class="p-grid" *ngIf="(logradouro.idRegiao != null && logradouro.uf != null && locais.length > 1)">
+          <label class="label label-3 label-lg-2">Tipo de agendamento:</label>
+          <div class="p-col-3 p-lg-2">
+            <p-dropdown dropdownLocalVistoria appendTo="body" [(ngModel)]="agendamento.tipo" [options]="locais" [showClear]="true"
+              (onChange)="onChangeTipoAgendamento($event.value)">
+            </p-dropdown>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+  <ng-template
+    [ngIf]="(agendamento.tipo == 'M' && logradouro.idRegiao != null && logradouro.uf != null && locais.length > 1)">
+    <div class="p-grid">
+      <div class="p-col">
+        <p-fieldset>
+          <p-header>Dados do Agendamento Digital</p-header>
+          <div class="p-grid">
+            <div class="p-col-fixed">
+              <div class="p-grid">
+                <label class="label">Número que será enviado o link para realização da VP:</label>
+              </div>
+            </div>
+            <div class="p-col-fixed" style="width: 50px;">
+              <p-inputMask name="telefone.ddd" type="text" [(ngModel)]="telefone.ddd" unmask="true" ngModel required
+                maxlength="2" mask="99"></p-inputMask>
+            </div>
+            <div class="p-col-fixed" style="width: 100px;">
+              <p-inputMask name="telefone.telefone" type="text" [(ngModel)]="telefone.telefone" unmask="true" ngModel
+                required maxlength="9" mask="999999999"></p-inputMask>
+            </div>
+            <div class="p-col-fixed" style="width: 275px;">
+              <div class="p-grid">
+                <label for="nomeContato" class="label">Nome Contato:</label>
+                <div class="p-col">
+                  <input id="nomeContato" type="text" pInputText [(ngModel)]="telefone.contato" name="telefone.contato"
+                    maxlength="100" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </p-fieldset>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template
+    [ngIf]="(agendamento.tipo == 'P' && logradouro.idRegiao != null && logradouro.uf != null && locais.length > 1) ">
+    <div class="p-grid">
+      <div class="p-col">
+        <p-fieldset>
+          <p-header>Dados do Agendamento Posto</p-header>
+          <app-consulta-posto [isCaminhao]="isCaminhao" [idVistoria]="idVistoria" [idRegiao]="logradouro.idRegiao"
+            (onSelect)="setPosto($event)">
+          </app-consulta-posto>
+        </p-fieldset>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template
+    [ngIf]="(agendamento.tipo == 'D' && logradouro.idRegiao != null && logradouro.uf != null && locais.length > 1)">
+    <div class="p-grid">
+      <div class="p-col">
+        <p-fieldset>
+          <p-header>Dados do Agendamento Domicílio</p-header>
+          <app-vistoria-domicilio [(model)]="vistoriaDomicilio">
+          </app-vistoria-domicilio>
+        </p-fieldset>
+      </div>
+    </div>
+  </ng-template>
+  <div class="p-grid">
+    <div class="p-col">
+      <p-fieldset *ngIf="vistoria.frota">
+        <p-header>Itens</p-header>
+        <app-vistoria-frota></app-vistoria-frota>
+      </p-fieldset>
+    </div>
+  </div>
+</p-panel>

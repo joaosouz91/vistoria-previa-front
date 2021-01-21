@@ -1,0 +1,511 @@
+<div class="p-grid m-0">
+    <div class="p-col-fixed" style="width:300px">
+        <p-card>
+            <h6>Detalhe da Vistoria</h6>
+            <hr />
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <label class="label">Vistoria:</label>
+                    <div class="info">{{laudofull?.laudo?.CODIGO_LVPRE}}</div>
+                </div>
+                <div class="ui-g-2">
+                    <label class="label">Voucher:</label>
+                    <div class="info">{{laudofull?.laudo?.CODIGO_VOUCH}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Data da Vistoria:</label>
+                    <div class="info">{{laudofull?.laudo?.DT_VSPRE | date:'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Vistoriadora:</label>
+                    <div class="info">{{laudofull?.laudo?.NOME_EMPRESA_VISTORIA}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Data Transmissão:</label>
+                    <div class="info">{{laudofull?.laudo?.DT_TRNSM_VSPRE | date:'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Chassi:</label>
+                    <div class="info">{{laudofull?.veiculo?.codigo_chassi}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Placa:</label>
+                    <div class="info">{{laudofull?.veiculo?.placa_veiculo}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Modelo:</label>
+                    <div class="info">{{laudofull?.veiculo?.modelo_veiculo}}</div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <div class="p-col">
+        <p-card>
+            <h6>Vistoria</h6>
+            <hr />
+            <p-tabView>
+                <p-tabPanel header="Dados Básicos" leftIcon="fa fa-info-circle">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <div
+                                *ngIf="laudofull.laudo.IC_LAUDO_VICDO === 'N' && laudofull.laudo.CODIGO_SITUCAO_BLQUE_VSPRE === 1 ; else elseAgeBlock">
+                                <label class="label">Situação:</label>
+                                <div class="info">Bloqueado</div>
+                            </div>
+                            <ng-template #elseAgeBlock>
+                                <label for="situacao" class="label">Situação:</label>
+                                <div class="info">{{laudofull?.laudo?.IC_LAUDO_VICDO | laudoSituacao}}</div>
+                            </ng-template>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Realizada em:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_VSPRE | date: 'dd/MM/yyyy HH:mm'}}</div>
+                        </div>
+                        <div class="ui-g-6">
+                            <label class="label">Corretor:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_CORRETOR_SEGURADO}} - {{nomeCorretor}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Data Bloqueio:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_LIMIT_BLQUE_VSPRE | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Solicitante:</label>
+                            <div class="info">{{laudofull?.laudo?.NM_SOLTT_VSPRE}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label for="cod-cliente" class="label">Código Cliente:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_CLIENTE}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Item:</label>
+                            <div class="info">{{laudofull?.laudo?.NR_ITSEG}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Negócio:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_NGOCO}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Endosso:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_ENDOSSO}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Status Vistoria:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_SITUCAO_VSPRE}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Vistoriador:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_VSTRO}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Local da Vistoria:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_LOCAL_VSPRE}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">KM p/ Realização:</label>
+                            <div class="info">{{laudofull?.laudo?.QT_KM_RALZO}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label class="label">Reclassificação:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_RCLSF_VSPRE | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="ui-g-10">
+                            <label for="motivo" class="label">Motivo Status:</label>
+                            <div class="info">{{laudofull?.laudo?.DS_MOTV_RCLSF_VSPRE}}</div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Dados Proponente" leftIcon="fa fa-user">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Proponente:</label>
+                            <div class="info">{{laudofull?.proponente?.NM_PRPNT}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">CPF/CNPJ:</label>
+                            <div class="info">{{laudofull?.proponente?.NR_CPF_PRPNT}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Data Nascimento:</label>
+                            <div class="info">{{laudofull?.proponente?.DT_NASCM_PRPNT | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Estado Civil:</label>
+                            <div class="info">{{laudofull?.proponente?.DESCRICAO_ESTAD_CIVIL_PRPNT}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Telefone:</label>
+                            <div class="info">{{laudofull?.proponente?.NR_TELEF_PRPNT}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Endereço:</label>
+                            <div class="info">{{laudofull?.proponente?.DS_ENDER}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Bairro:</label>
+                            <div class="info">{{laudofull?.proponente?.NM_BAIRR}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">CEP:</label>
+                            <div class="info">{{laudofull?.proponente?.NR_CEP}}</div>
+                        </div>
+                        <div class="ui-g-3">
+                            <label class="label">Cidade:</label>
+                            <div class="info">{{laudofull?.proponente?.NM_CIDAD}}</div>
+                        </div>
+                        <div class="ui-g-1">
+                            <label class="label">UF:</label>
+                            <div class="info">{{laudofull?.proponente?.SG_UNIDD_FEDRC}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label class="label">Número da CNH:</label>
+                            <div class="info">{{laudofull?.proponente?.CD_CNH_PRPNT}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <p-fieldset>
+                                <p-header>Dados do Condutor</p-header>
+                                <div class="ui-g-4">
+                                    <label class="label">Nome do Condutor:</label>
+                                    <div class="info">{{laudofull?.proponente?.NM_CODUT}}</div>
+                                </div>
+                                <div class="ui-g-2">
+                                    <label class="label">Nascimento</label>
+                                    <div class="info">{{laudofull?.proponente?.DT_NASCM_CODUT | date:'dd/MM/yyyy'}}
+                                    </div>
+                                </div>
+                                <div class="ui-g-2">
+                                    <label class="label">CPF</label>
+                                    <div class="info">{{laudofull?.proponente?.NR_CPF_CODUT}}</div>
+                                </div>
+                                <div class="ui-g-2">
+                                    <label class="label">Estado Civil:</label>
+                                    <div class="info">{{laudofull?.proponente?.DESCRICAO_ESTAD_CIVIL_CODUT}}</div>
+                                </div>
+                                <div class="ui-g-2">
+                                    <label class="label">Número da CNH:</label>
+                                    <div class="info">{{laudofull?.proponente?.CD_CNH_CODUT}}</div>
+                                </div>
+                            </p-fieldset>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Dados Veiculo" leftIcon="fa fa-car">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Marca/Modelo:</label>
+                            <div class="info">{{laudofull?.veiculo?.nome_modelo_veiculo}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Fabricante:</label>
+                            <div class="info">{{laudofull?.veiculo?.nome_fabricante}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Ano Modelo:</label>
+                            <div class="info">{{laudofull?.veiculo?.ano_modelo_veiculo}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Ano Fabricação:</label>
+                            <div class="info">{{laudofull?.veiculo?.ano_fab_veiculo}}</div>
+                        </div>
+                        <div class="ui-g-1">
+                            <label class="label">Carga:</label>
+                            <div class="info">{{laudofull?.veiculo?.icVeicuCarga | simNao}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">DUT em nome de:</label>
+                            <div class="info">{{laudofull?.veiculo?.nmDutVeicu}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">DUT número:</label>
+                            <div class="info">{{laudofull?.veiculo?.dut_veiculo}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Expedido em:</label>
+                            <div class="info">{{laudofull?.veiculo?.data_exp_dut | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">CNPJ/CPF DUT:</label>
+                            <div class="info">{{laudofull?.veiculo?.cnpj_dut}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">CPF:</label>
+                            <div class="info">{{laudofull?.veiculo?.cpf_dut}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-1">
+                            <label class="label">UF:</label>
+                            <div class="info">{{laudofull?.veiculo?.uf_dut}}</div>
+                        </div>
+                        <div class="ui-g-3">
+                            <label class="label">Cidade:</label>
+                            <div class="info">{{laudofull?.veiculo?.cidade_dut}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Renavan:</label>
+                            <div class="info">{{laudofull?.veiculo?.renavam}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Alienado a:</label>
+                            <div class="info">{{laudofull?.veiculo?.nmAlienVeicu}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Cor:</label>
+                            <div class="info">{{laudofull?.veiculo?.cor_veiculo}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Tipo Cor:</label>
+                            <div class="info">{{laudofull?.veiculo?.tpPnturVeicu | tipoCor}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label class="label">Combustível:</label>
+                            <div class="info">{{laudofull?.veiculo?.DESCRICAO_Cmbst}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Tipo Câmbio:</label>
+                            <div class="info">{{laudofull?.veiculo?.tpCamboVeicu | tipoCambio}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Número Motor:</label>
+                            <div class="info">{{laudofull?.veiculo?.codigo_motor}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label for="quilometragem" class="label">Quilometragem:</label>
+                            <div class="info">{{laudofull?.veiculo?.qntd_km_rodado}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Qtd. Portas:</label>
+                            <div class="info">{{laudofull?.veiculo?.qtPortaVeicu}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Chassi Remarcado:</label>
+                            <div class="info">{{laudofull?.veiculo?.origem_motor | simNao}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label class="label">Qtd. Passageiros:</label>
+                            <div class="info">{{laudofull?.veiculo?.qtLotacVeicu}}</div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Veículo Carga" leftIcon="fa fa-truck"
+                    [hidden]="laudofull.veiculo.icVeicuCarga === 'N'">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-3">
+                            <label class="label">Marca da Carroceria:</label>
+                            <div class="info">{{laudofull?.veiculo?.marca_carro_carga}}</div>
+                        </div>
+                        <div class="ui-g-3">
+                            <label class="label">Formato da Carroceria:</label>
+                            <div class="info">{{laudofull?.veiculo?.cdFormaCarroVeicu | formatoCarroceria}}</div>
+                        </div>
+                        <div class="ui-g-3">
+                            <label class="label">Material da Carroceria:</label>
+                            <div class="info">{{laudofull?.veiculo?.DESCRICAO_MtralCargaVeicu}}</div>
+                        </div>
+                        <div class="ui-g-3">
+                            <label class="label">Tipo da Carroceria:</label>
+                            <div class="info">{{laudofull?.veiculo?.DESCRICAO_CarroVeicu}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-3">
+                            <label class="label">Possui Rodoar:</label>
+                            <div class="info">{{laudofull?.veiculo?.icRodoar | simNao}}</div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Acessórios" leftIcon="fa fa-cogs">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-table [responsive]="true" [value]="laudofull.acessorios" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descrição Item</th>
+                                        <th>Tipo</th>
+                                        <th>Complemento</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                        <td>{{item[2]}}</td>
+                                        <td>{{item[3]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Equipamento de Segurança" leftIcon="fa fa-exclamation-triangle">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-table [responsive]="true" [value]="laudofull.equipSegur" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descrição Item</th>
+                                        <th>Tipo</th>
+                                        <th>Complemento</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                        <td>{{item[2]}}</td>
+                                        <td>{{item[3]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Equipamentos" leftIcon="fa fa-cogs">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-table [responsive]="true" [value]="laudofull.equipamentos" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descrição Item</th>
+                                        <th>Tipo</th>
+                                        <th>Complemento</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td s>{{item[1]}}</td>
+                                        <td s>{{item[2]}}</td>
+                                        <td s>{{item[3]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Peças Avariadas" leftIcon="fa fa-ban">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-table [responsive]="true" [value]="laudofull.avarias" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descrição da Peça</th>
+                                        <th>Tipo de Avaria</th>
+                                        <th>Total de horas</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                        <td>{{item[3]}}</td>
+                                        <td>{{item[4]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Informações técnicas" leftIcon="fa fa-info-circle">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-fieldset legend="Observação / Parecer Técnico">
+                                {{laudofull.laudo.DS_OBSER_VSPRE}}
+                            </p-fieldset>
+                            <br>
+                            <p-table [responsive]="true" [value]="laudofull.infTech" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th> Código</th>
+                                        <th>Descrição Item</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Propostas Vinculadas" leftIcon="fa fa-file"
+                    [hidden]="laudofull.laudo.IC_LAUDO_VICDO === 'N'">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12 ui-md-12">
+                            <p-table [autoLayout]="true" [responsive]="true" [value]="laudofull.propostasVinculadas"
+                                [autoLayout]="true" [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Negócio</th>
+                                        <th>Item</th>
+                                        <th>Data de Emissão</th>
+                                        <th>Endosso</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                        <td>{{item[2] | date: 'dd/MM/yyyy '}}</td>
+                                        <td>{{item[3]}}</td>
+                                        <td>{{item[4]}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+        </p-card>
+    </div>
+</div>

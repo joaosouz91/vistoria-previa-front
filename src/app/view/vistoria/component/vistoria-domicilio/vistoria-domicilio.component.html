@@ -1,0 +1,71 @@
+<div class="p-grid">
+  <!-- <label for="cep" class="label-1">CEP:</label>
+  <div class="p-col-1">
+    <p-inputMask id="cep" mask="99999-999" unmask="true" [(ngModel)]="vistoriaDomicilio.agendamento.cep"
+      (change)="recuperarLogradouro()"></p-inputMask>
+  </div> -->
+  <label for="logradouro" class="label-1">Endereço:</label>
+  <div class="p-col-3">
+    <input id="logradouro" class="text-uppercase" type="text" pInputText
+      [(ngModel)]="vistoriaDomicilio.agendamento.logradouro" maxlength="60" />
+  </div>
+  <label for="numeroLogradouro" class="label-1">Número:</label>
+  <div class="p-col-3 p-lg-2">
+    <div class="p-grid">
+      <div class="p-col">
+        <input id="numeroLogradouro" pKeyFilter="pint" type="text" pInputText
+          [disabled]="vistoriaDomicilio.isCheckboxSN" [(ngModel)]="vistoriaDomicilio.agendamento.numeroLogradouro"
+          maxlength="10" />
+      </div>
+      <div class="p-col-fixed" style="width:75px">
+        <p-checkbox [(ngModel)]="vistoriaDomicilio.isCheckboxSN" label="S/N" binary="true"
+          (onChange)="setNumeroLogradouroSN()" class="label">
+        </p-checkbox>
+      </div>
+    </div>
+  </div>
+  <label for="complemento" class="label-2 label-lg-1">Complemento:</label>
+  <div class="p-col-2">
+    <input id="complemento" class="text-uppercase" type="text" pInputText
+      [(ngModel)]="vistoriaDomicilio.agendamento.complemento" maxlength="50" />
+  </div>
+</div>
+<div class="p-grid">
+  <label for="bairro" class="label-1">Bairro:</label>
+  <div class="p-col-3">
+    <input id="bairro" class="text-uppercase" type="text" pInputText [(ngModel)]="vistoriaDomicilio.agendamento.bairro"
+      maxlength="40" />
+  </div>
+  <label for="dataVistoria" class="label-2 label-lg-1">Data Vistoria:</label>
+  <div class="p-col-3 p-lg-2">
+    <p-calendar id="dataVistoria" [(ngModel)]="vistoriaDomicilio.agendamento.dataVistoria" [minDate]="minDate"
+      [maxDate]="maxDate" [defaultDate]="minDate" [showButtonBar]="false" [disabledDays]="[0]" [readonlyInput]="true"
+      (onSelect)="carregarPeriodo()">
+      <ng-template pTemplate="date" let-date>
+        <span class="dt-enable">{{date.day}}</span>
+      </ng-template>
+    </p-calendar>
+  </div>
+  <label for="periodoVistoria" class="label-1">Período:</label>
+  <div class="p-col-2">
+    <p-dropdown id="periodoVistoria" appendTo="body" [options]="periodos" [autoDisplayFirst]="false"
+      [(ngModel)]="vistoriaDomicilio.agendamento.periodoVistoria">
+    </p-dropdown>
+  </div>
+</div>
+<div class="p-grid">
+  <label for="contato" class="label-1">Contato:</label>
+  <div class="p-col-3 p-lg-2">
+    <input id="contato" type="text" pInputText [(ngModel)]="vistoriaDomicilio.contato" maxlength="100" />
+  </div>
+  <div class="p-col-4 p-lg-3">
+    <app-input-telefone #inputTelefoneAgendamento labelClass="label label-4" dddClass="p-col-3" class="p-grid"
+      (updateModel)="updateTelefonesDomicilio($event)" [model]="vistoriaDomicilio.telefones">
+    </app-input-telefone>
+  </div>
+  <div class="p-col-4">
+    <app-input-email #inputEmailAgendamento class="p-grid" labelClass="label-3"
+      (updateModel)="updateEmailsDomicilio($event)" [model]="vistoriaDomicilio.emails">
+    </app-input-email>
+  </div>
+</div>

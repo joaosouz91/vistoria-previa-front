@@ -1,0 +1,72 @@
+<p-panel>
+  <p-header><b>Agendamento Vistoria Prévia Santander</b></p-header>
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-12">
+      <p-fieldset>
+        <p-header>Dados do Cliente</p-header>
+        <div class="p-grid">
+          <label class="label">Informe Numero Cotação VC/AC:</label>
+          <div class="p-col-2">
+            <input type="text" pInputText [(ngModel)]="cotacao" />
+          </div>
+          <div class="p-col">
+            <button type="button" pButton icon="pi pi-search" class="ui-button-raised ui-button-secondary mr-2"
+              (click)="pesquisar()"></button>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+    <div class="ui-g-12 ui-md-12" *ngIf="vistoria">
+      <p-fieldset>
+        <p-header>Dados do Cliente</p-header>
+        <div class="p-grid">
+          <div class="ui-g-2">
+            <label class="label">* CPF/CNPJ:</label>
+            <p-inputCpfCnpj [(ngModel)]="vistoria.cpfCnpj" unmask="false"></p-inputCpfCnpj>
+          </div>
+          <div class="ui-g-10">
+            <label class="label">* Cliente:</label>
+            <input type="text" pInputText [(ngModel)]="vistoria.nomeCliente" />
+          </div>
+        </div>
+      </p-fieldset>
+      <p-fieldset>
+        <p-header>Dados do Veículo</p-header>
+        <div class="p-grid">
+          <div class="ui-g-2">
+            <label class="label">* Chassi:</label>
+            <input type="text" pInputText [(ngModel)]="vistoria.chassi" />
+          </div>
+          <div class="ui-g-2">
+            <label class="label">* Placa:</label>
+            <input type="text" pInputText [(ngModel)]="vistoria.placa" />
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Fabricante:</label>
+            <span class="d-block label">{{vistoria?.nomeFabricante}}</span>
+          </div>
+          <div class="ui-g-4">
+            <label class="label">Modelo Veículo:</label>
+            <span class="d-block label">{{vistoria?.nomeModelo}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Ano Modelo:</label>
+            <span class="d-block label">{{vistoria?.anoModelo}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Zero KM.:</label>
+            <span class="d-block label">{{vistoria?.zeroKM ? 'Sim' : 'Não'}}</span>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+  <p-footer *ngIf="vistoria">
+    <div class="text-right">
+      <button type="button" pButton icon="pi pi-times" class="ui-button-raised ui-button-secondary mr-2"
+        label="Cancelar" (click)="cancelar()"></button>
+      <button type="button" pButton icon="pi pi-arrow-right" iconPos="right"
+        class="ui-button-raised ui-button-secondary mr-2" label="Avançar" (click)="gravar()"></button>
+    </div>
+  </p-footer>
+</p-panel>

@@ -1,0 +1,25 @@
+<p-panel>
+    <p-header><b>Dispensa de Vistoria</b></p-header>
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+            
+            <div class="ui-g-12 ui-md-12">
+                <label for="placa-chassi" class="label">Motivo Dispensa:</label>
+                <p-dropdown [options]="selectItens" [(ngModel)]="dispensa.conteudoColunaTipo" 
+                placeholder="Selecionar" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+                    
+            <div class="ui-g-12 ui-md-12">
+                <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Justificativa:</label>
+                <textarea rows="5" cols="30" [(ngModel)]="dispensa.justificativaDispensa" maxlength="400" pInputTextarea></textarea>
+            </div>
+            
+        </div>        
+    </div>
+    
+    <p-footer>
+        <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar" style="margin-left: 10px;" (click)="voltarPagina()"></button>        
+        <button type="button" pButton icon="pi pi-check" class="ui-button-secondary" label="Salvar" style="margin-left: 5px;" (click)="salvar()"></button>        
+    </p-footer>
+</p-panel>

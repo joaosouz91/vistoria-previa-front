@@ -1,0 +1,153 @@
+<p-panel header="Relatório - Improdutivos" *ngIf="!relatorio">
+    <form [formGroup]="formPesquisa" (ngSubmit)="onSubmit()">
+        <p-fieldset legend="Dados Visão">
+            <div class="ui-fluid">
+                <div class="p-field p-grid">
+                    <label class="p-col-1">Visão:</label>
+                    <div class="p-col-2">
+                        <p-dropdown [options]="visoes$ | async" formControlName="visao" appendTo="body"
+                            [autoDisplayFirst]="false">
+                        </p-dropdown>
+                    </div>
+                    <ng-template [ngIf]="formPesquisa.value.visao == 'SI'">
+                        <label class="p-col-2">Superintendência:</label>
+                        <div class="p-col-4">
+                            <p-dropdown [options]="superintendencias$ | async" formControlName="superintendencia"
+                                appendTo="body" filter="true" [autoDisplayFirst]="false"></p-dropdown>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="formPesquisa.value.visao == 'S'">
+                        <label class="p-col-1">Sucursal:</label>
+                        <div class="p-col-4">
+                            <p-dropdown [options]="sucursais$ | async" formControlName="sucursal" appendTo="body"
+                                filter="true" [autoDisplayFirst]="false">
+                            </p-dropdown>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="formPesquisa.value.visao == 'C'">
+                        <label class="p-col-1">Corretor:</label>
+                        <div class="p-col-1">
+                            <div class="ui-inputtext ui-corner-all ui-state-disabled"
+                                style="height: 29px;white-space: nowrap;overflow: hidden;line-height: 15px;">
+                                {{formPesquisa.value.corretor?.idCorretor}}</div>
+                        </div>
+                        <div class="p-col-4">
+                            <div class="ui-inputtext ui-corner-all ui-state-disabled"
+                                style="height: 29px;white-space: nowrap;overflow: hidden;line-height: 15px;">
+                                {{formPesquisa.value.corretor?.nomeCorretor}}</div>
+                        </div>
+                        <div class="p-col-fixed">
+                            <button pButton type="button" icon="pi pi-search"
+                                (click)="abrirDialogConsultaCorretor()"></button>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </p-fieldset>
+        <ng-template [ngIf]="formPesquisa.value.visao == 'VP'">
+            <p-fieldset legend="Dados Vistoria Prévia">
+                <div class="ui-fluid">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col-2">
+                            <label>Número Laudo:</label>
+                            <input type="text" class="text-uppercase" pInputText formControlName="laudo" />
+                        </div>
+                        <div class="p-field p-col-2">
+                            <label>Data da Vistoria:</label>
+                            <p-calendar formControlName="dataVistoria"></p-calendar>
+                        </div>
+                        <div class="p-field p-col-2">
+                            <label>Número Voucher:</label>
+                            <input type="text" class="text-uppercase" pInputText formControlName="voucher" />
+                        </div>
+                        <div class="p-field p-col-2">
+                            <label>Parecer Técnico:</label>
+                            <p-dropdown [options]="pareceresTecnicos" formControlName="parecereTecnico" appendTo="body">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </ng-template>
+        <ng-template [ngIf]="formPesquisa.value.visao == 'VL'">
+            <p-fieldset legend="Dados do Veículo">
+                <div class="ui-fluid">
+                    <div class="p-fluid p-formgrid p-grid">
+                        <div class="p-field p-col-2">
+                            <label>Placa:</label>
+                            <input type="text" class="text-uppercase" pInputText formControlName="placa" />
+                        </div>
+                        <div class="p-field p-col-2">
+                            <label>Chassi:</label>
+                            <input type="text" class="text-uppercase" pInputText formControlName="chassi" />
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </ng-template>
+        <p-fieldset legend="Mês de Referência">
+            <div class="ui-fluid">
+                <div class="p-field p-grid">
+                    <label class="p-col-2">Mês de Referência:</label>
+                    <div class="p-col-2">
+                        <p-dropdown [options]="datasReferencia$ | async" formControlName="dataReferencia"
+                            appendTo="body" [autoDisplayFirst]="false"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+        <div class="text-right mt-2 mb-2">
+            <button pButton type="submit" icon="pi pi-search" class="ui-button-raised mr-2" label="Pesquisar"></button>
+            <button pButton type="reset" icon="pi pi-times" class="ui-button-raised ui-button-secondary mr-2"
+                label="Cancelar"></button>
+        </div>
+    </form>
+</p-panel>
+<app-relatorio-improdutivo-visualizar *ngIf="relatorio" [relatorio]="relatorio" [filtroRelatorio]="formPesquisa.value"
+    (voltar)="relatorio=null">
+</app-relatorio-improdutivo-visualizar>
+<p-dialog header="Consultar Corretor" [(visible)]="dialogConsultaCorretor" [modal]="true" [responsive]="true"
+    [style]="{width: '500px'}" appendTo="body" position="top">
+    <form [formGroup]="formPesquisaCorretor" (ngSubmit)="pesquisarCorretor()">
+        <div class="ui-fluid">
+            <div class="p-field p-grid">
+                <div class="p-col-fixed" style="width: 100px;">
+                    <p-dropdown [options]="[{value:'C', label:'Código'}, {value:'N', label:'Nome'}]"
+                        formControlName="tipo" appendTo="body" [autoDisplayFirst]="false">
+                    </p-dropdown>
+                </div>
+                <div class="p-col">
+                    <input type="text" class="text-uppercase" pInputText formControlName="valor" />
+                </div>
+            </div>
+            <div class="p-field p-grid p-justify-end">
+                <div class="p-col-fixed">
+                    <button type="submit" [disabled]="formPesquisaCorretor.invalid" pButton icon="pi pi-search"
+                        label="Pesquisar"></button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <p-table [value]="corretores" [(selection)]="formPesquisa.value.corretor" dataKey="idCorretor" [autoLayout]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3em"></th>
+                <th>Código</th>
+                <th>Nome</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-c>
+            <tr>
+                <td>
+                    <p-tableRadioButton [value]="c"></p-tableRadioButton>
+                </td>
+                <td>{{c.idCorretor}}</td>
+                <td>{{c.nomeCorretor}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <p-footer>
+        <button type="button" (click)="fecharDialogConsultaCorretor()" pButton icon="pi pi-times"
+            class="ui-button-secondary" label="Fechar"></button>
+    </p-footer>
+</p-dialog>

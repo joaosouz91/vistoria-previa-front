@@ -1,0 +1,74 @@
+<p-panel>
+    <p-header><b>Prestadora</b></p-header>
+    <p-footer>
+        <div class="text-right">
+            <button type="button" pButton icon="pi pi-plus" class="ui-button-raised ui-button-secondary mr-2"
+                label="Novo" [routerLink]="['novo']"></button>
+        </div>
+    </p-footer>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+
+            <p-fieldset>
+                <p-header>Consulta de Prestadoras</p-header>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-2">
+                        <label for="codigoPrestadora" class="label">Código Prestadora:</label>
+                        <input id="codigoPrestadora" type="text" pInputText [(ngModel)]="filtro.codigoPrestadora" />
+                    </div>
+
+                    <div class="ui-g-12 ui-md-3">
+                        <label for="cpfCnpj" class="label">CPF/CNPJ:</label>
+                        <p-inputCpfCnpj id="cpfCnpj" [(ngModel)]="filtro.cpfCnpj" unmask="false"></p-inputCpfCnpj>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-4">
+                        <label for="razaoSocial" class="label">Razão Social:</label>
+                        <input id="razaoSocial" type="text" pInputText [(ngModel)]="filtro.razaoSocial" />
+                    </div>
+
+                    <div class="ui-g-12 ui-md-3 d-inline-flex">
+                        <button type="button" pButton title="Pesquisar" label="Pesquisar" icon="pi pi-search"
+                            class="ui-button-secondary align-self-end" style="width: 130px"
+                            (click)="pesquisarPrestadora()"></button>
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <p-table [value]="prestadoras" [responsive]="true" [paginator]="true" [rows]="filtro.itensPorPagina"
+                [totalRecords]="totalRegistros" [lazy]="true" (onLazyLoad)="loadPrestadorasLazy($event)"  [loading]="loading" class="m-5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Código Prestadora</th>
+                        <th>Razão Social</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Contato</th>
+                        <th>Data Início Atividade</th>
+                        <th>Data Desativação</th>
+                        <th>Responsável</th>
+                        <th style="width: 83px">Ações</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{ item.codigoPrestadora }}</td>
+                        <td>{{ item.razaoSocial }}</td>
+                        <td>{{ item.cpfCnpj }}</td>
+                        <td>{{ item.contato }}</td>
+                        <td>{{ item.dataInicioAtividade | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ item.dataDesativacao | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ item.usuarioUltimaAlteracao }}</td>
+                        <td>
+                            <!-- <button type="button" pButton class="ui-button-secondary mr-1" title="Detalhe da Prestadora"
+                                icon="pi pi-search" (click)="visualizarPrestadora(item)"></button> -->
+                            <button type="button" pButton class="ui-button-secondary mr-1" title="Editar Prestadora"
+                                icon="pi pi-pencil" (click)="visualizarPrestadora(item)"></button>
+                            <btn-listar-postos [codigoPrestadora]="item.codigoPrestadora" [listagem]="true">
+                            </btn-listar-postos>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</p-panel>

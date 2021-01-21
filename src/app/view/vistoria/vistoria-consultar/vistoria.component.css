@@ -1,0 +1,11 @@
+.table-situacao > thead > tr > th,
+.table-situacao > tbody > tr > th,
+.table-situacao > tbody > tr > td {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.table-situacao > thead > tr > th,
+.table-situacao > tbody > tr > td[colspan] {
+    text-align: center;
+}

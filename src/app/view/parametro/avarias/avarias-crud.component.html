@@ -1,0 +1,130 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-8 ui-md-8" style="margin : auto;">
+        <p-panel>
+            <p-header [style]="{'text-align':'center'}"><b>Avarias Vistoria Prévia</b></p-header>
+
+
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12" [style]="{'margin': 'auto'}">
+
+                    <p-table #dt [columns]="cols" [value]="avariasList" [rows]="10" selectionMode="single" [paginator]="true"
+                        [rowsPerPageOptions]="[10, 20, 50, 100]" [loading]="loading" [metaKeySelection]="false">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns" [ngStyle]="{'width': col.width}">{{col.header}}</th>
+                                <th [ngStyle]="{'width': '10%', 'text-align' : 'center'}">Ação</th>
+                            </tr>
+                            <tr>
+                                <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                    <div style="display: flex;"><input style="flex: 1;" size="4"
+                                            *ngSwitchCase="'cdTipoAvari'" pInputText type="text"
+                                            (input)="dt.filter($event.target.value, col.field, 'contains')"></div>
+                                    <div style="display: flex;"><input style="flex: 1;" *ngSwitchCase="'dsTipoAvari'"
+                                            pInputText type="text"
+                                            (input)="dt.filter($event.target.value, col.field, 'contains')"></div>
+                                    <div style="display: flex;">
+                                        <p-dropdown appendTo="body" *ngSwitchCase="'cdSitucAvari'"
+                                            placeholder="Selecione" [options]="dropDownAtivoInativo"
+                                            [style]="{'width':'100%'}"
+                                            (onChange)="dt.filter($event.value, col.field, 'equals')"></p-dropdown>
+                                    </div>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
+                                <td class="ui-resizable-column">{{item.cdTipoAvari}}</td>
+                                <td class="ui-resizable-column">{{item.dsTipoAvari}}</td>
+                                <td class="ui-resizable-column">{{item.cdSitucAvari == 'A' ? 'Ativo' : 'Inativo'}}</td>
+                                <td style="text-align: center;">
+                                    <button type="button" style="font-size: 8px" pButton icon="pi pi-pencil"
+                                        (click)="onClickEdit(item)" pTooltip="Editar"
+                                        class="ui-button-text ui-clickable"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-4" style="display: inline-block;">
+                    <div class="ui-g-5" [style]="{'float':'left'}">
+                        <button type="button" pButton label="Adicionar" icon="pi pi-plus"
+                            class="ui-button-success ui-clickable" (click)="onClickAdicionar()"></button>
+                    </div>
+                    <div class="ui-g-5"></div>
+                </div>
+                <div class="p-col-8"></div>
+            </div>
+
+        </p-panel>
+    </div>
+
+
+    <p-dialog position="top" [draggable]="false" [(visible)]="modalVisible" modal="true" dismissableMask="true"
+        appendTo="body" [responsive]="true" [style]="{width: '500px'}">
+
+        <p-header>
+            <span>{{dialogHeaderText}}</span>
+        </p-header>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <ng-container>
+                    <div class="p-grid">
+                        <label for="idSalvar" class="label-2">Tipo:</label>
+                        <div class="p-col-4">
+                            <input id="idSalvar" [disabled]="modalEditActive" type="text" value="90" pInputText
+                                maxlength="20" [(ngModel)]="modalTipo" />
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="p-grid">
+                    <label for="descricaoSalvar" class="label-2">Descrição:</label>
+                    <div class="p-col">
+                        <input id="descricaoSalvar" type="text" pInputText maxlength="100"
+                            [(ngModel)]="modalDescricao" />
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <label for="situacaoSalvar" class="label-2 m-5">Situação:</label>
+                    <div class="p-col-4">
+                        <p-dropdown id="situacaoSalvar"
+                            [options]="[{value:'A', label:'Ativo'}, {value:'I', label:'Inativo'}]"
+                            [(ngModel)]="modalSituacao" autoWidth="false" [style]="{'width':'100%'}" appendTo="body">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12" style="margin : auto;">
+                    <div class="p-grid">
+                        <div class="p-col-6"></div>
+                        <div class="p-col-6" style="display: inline-block; align-self: flex-end;">
+                            <div class="ui-g-6 padding-zero" [style]="{'text-align':'right'}">
+                                <button type="button" pButton label="Cancelar" icon="pi pi-times-circle"
+                                    class="ui-button-secondary ui-clickable m-5"
+                                    (click)="alterarStatusModal()"></button>
+                            </div>
+                            <div class="ui-g-6 padding-zero" [style]="{'text-align':'right'}">
+                                <button type="button" pButton label="Confirmar" icon="pi pi-check-circle"
+                                    class="ui-button ui-clickable m-5" (click)="onClickConfirmar()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </p-footer>
+
+    </p-dialog>
+
+
+</div>

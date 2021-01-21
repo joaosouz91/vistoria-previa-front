@@ -1,0 +1,116 @@
+<p-panel>
+    <p-header><b>Relatório Faturamento - Resultados</b></p-header>
+
+    <div class="ui-g ui-fluid">
+
+        <div class="ui-g-12 ui-md-12">
+
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Prestadora:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{nmPrestadora}}</label>
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Periodo:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{loadedParams.month}}/{{loadedParams.year}}</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ui-g-12 ui-md-12" [style]="{'margin-top': '0px !important'}">
+
+            <p-table [value]="dto.estatisticaFaturamentoList" [responsive]="true" [paginator]="true"
+                [rows]="filtro.itensPorPagina" [rowsPerPageOptions]="[10, 20, 50, 100]" [pageLinks]="10"
+                [loading]="loading" [autoLayout]="true" [totalRecords]="filtro.totalRegistros" class="m-5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Código</th>
+                        <th>Prestadora</th>
+                        <th>Mobile</th>
+                        <th>Posto Vistoriador</th>
+                        <th>Domicílio</th>
+                        <th>Até 50 Km</th>
+                        <th>De 51 a 100 Km</th>
+                        <th>De 101 a 200 Km</th>
+                        <th>Maior de 200 Km</th>
+                        <th>Total</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.codigoEmpresa}}</td>
+                        <td>{{item.nomeEmpresa}}</td>
+                        <td>{{item.quantidadeMobile}}</td>
+                        <td>
+                            <span *ngIf="item.quantidadePosto>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'P', 0)">{{item.quantidadePosto}}</a></span>
+                            <span *ngIf="item.quantidadePosto==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantidadeDomicilio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'D', 0)">{{item.quantidadeDomicilio}}</a></span>
+                            <span *ngIf="item.quantidadeDomicilio==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantidadeDistKmPrimeiro>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'D', 1)">{{item.quantidadeDistKmPrimeiro}}</a></span>
+                            <span *ngIf="item.quantidadeDistKmPrimeiro==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantidadeDistKmSegundo>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'D', 2)">{{item.quantidadeDistKmSegundo}}</a></span>
+                            <span *ngIf="item.quantidadeDistKmSegundo==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantidadeDistKmTerceiro>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'D', 3)">{{item.quantidadeDistKmTerceiro}}</a></span>
+                            <span *ngIf="item.quantidadeDistKmTerceiro==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantidadeDistKmQuarto>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'D', 4)">{{item.quantidadeDistKmQuarto}}</a></span>
+                            <span *ngIf="item.quantidadeDistKmQuarto==0">0</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.totalGeral>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 'T', 0)">{{item.totalGeral}}</a></span>
+                            <span *ngIf="item.totalGeral==0">0</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr *ngIf="dto.linhaComTotal != null">
+                        <td><span>Total</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalPrimeiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemPrimeiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalSegundoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemSegundoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalTerceiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemTerceiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalQuartoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemQuartoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalQuintoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemQuintoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.quantTotalUltimoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.porcentagemUltimoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{dto.linhaComTotal.totalGeral}}</span></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <p-footer>
+        <div class="ui-g">
+            <div class="ui-g-6">
+                <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar"
+                    (click)="voltarPagina()"></button>
+            </div>
+            <div class="ui-g-6" [style]="{'text-align':'right'}">
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+            </div>
+        </div>
+    </p-footer>
+
+</p-panel>

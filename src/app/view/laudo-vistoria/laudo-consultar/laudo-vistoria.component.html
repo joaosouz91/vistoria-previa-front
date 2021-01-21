@@ -1,0 +1,223 @@
+<p-panel>
+    <p-header><b>Consulta de Vistorias</b></p-header>
+    <div class="p-grid mt-2">
+        <label for="placa" class="label-1">Placa:</label>
+        <div class="p-col-2">
+            <input type="text" pInputText id="placa" name="placa" pKeyFilter="alphanum" [(ngModel)]="filtro.placa"
+                maxlength="10" />
+        </div>
+        <label for="chassi" class="label-1">Chassi:</label>
+        <div class="p-col-2">
+            <input type="text" pInputText id="chassi" name="chassi" pKeyFilter="alphanum" [(ngModel)]="filtro.chassi"
+                maxlength="50" />
+        </div>
+    </div>
+    <div class="p-grid">
+        <label for="numeroVistria" class="label-1">N° Vistoria:</label>
+        <div class="p-col-2">
+            <input type="text" pInputText id="numeroVistria" name="numeroVistria" pKeyFilter="alphanum"
+                [(ngModel)]="filtro.numeroVistoria" maxlength="30" />
+        </div>
+        <label for="numeroVoucher" class="label-1">N° Voucher:</label>
+        <div class="p-col-2">
+            <input type="text" pInputText id="numeroVoucher" name="numeroVoucher" pKeyFilter="alphanum"
+                [(ngModel)]="filtro.numeroVoucher" maxlength="30" />
+        </div>
+    </div>
+    <div class="p-grid">
+        <label for="cpf" class="label-1">CPF:</label>
+        <div class="p-col-2">
+            <p-inputMask id="cpf" name="cpf" unmask="true" mask="999.999.999-99" [(ngModel)]="filtro.cpf">
+            </p-inputMask>
+        </div>
+        <label for="cnpj" class="label-1">CNPJ:</label>
+        <div class="p-col-2">
+            <p-inputMask id="cnpj" name="cnpj" unmask="true" [(ngModel)]="filtro.cnpj" mask="99.999.999/9999-99">
+            </p-inputMask>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col-6 text-right">
+            <button type="button" pButton (click)="pesquisar()" label="Pesquisar" icon="pi pi-search"
+                class="ui-button-secondary"></button>
+        </div>
+    </div>
+    <div class="p-grid">
+        <div class="p-col mt-4">
+            <p-table *ngIf="laudos.length > 0" [responsive]="true" [value]="laudos" [lazy]="true" [loading]="loading">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 100px; text-align: center">Número Vistoria</th>
+                        <th style="width: 70px; text-align: center">Placa</th>
+                        <th style="width: 150px; text-align: center">Chassi</th>
+                        <th style="text-align: center">Status</th>
+                        <th style="width: 90px; text-align: center">Data</th>
+                        <th style="width: 120px;text-align: center">Situação</th>
+                        <th style="width: 264px; text-align: center">Opções</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td style="text-align: center">{{ item.laudos.numeroVistoria }}</td>
+                        <td style="text-align: center">{{ item.laudos.placa }}</td>
+                        <td style="text-align: center">{{ item.laudos.chassi }}</td>
+                        <td style="text-align: center">{{ item.laudos.status }}</td>
+                        <td style="text-align: center">{{ item.laudos.data | date: 'dd/MM/yyyy' }}</td>
+                        <td style="text-align: center">{{ item.laudos.situacao }}</td>
+                        <td style="text-align: left">
+                            <button pButton *ngIf="item.regras.visualizaLaudo" class="ui-button-secondary"
+                                title="Visualizar laudo" icon="pi pi-search"
+                                (click)="visualizarLaudo(item.laudos.numeroVistoria)"
+                                style="margin-left: 5px;"></button>
+                            <button pButton *ngIf="item.regras.editarLaudo" class="ui-button-success"
+                                title="Editar laudo'" icon="pi pi-pencil"
+                                (click)="editarLaudo(item.laudos.numeroVistoria)" style="margin-left: 5px;"></button>
+                            <button pButton *ngIf="item.regras.alteraDataLaudo" class="ui-button-warning"
+                                title="Alterar data vistoria" icon="pi pi-calendar-plus"
+                                (click)="alterarData(item.laudos.numeroVistoria)" style="margin-left: 5px;"></button>
+                            <button pButton *ngIf="item.regras.logLaudo" class="ui-button-secondary"
+                                title="Log de Vinculo" icon="pi pi-table"
+                                (click)="exibirLogVinculo(item.laudos.numeroVistoria)"
+                                style="margin-left: 5px;"></button>
+                            <button pButton *ngIf="item.regras.desbloqueiaLaudo" class="ui-button-success"
+                                title="Desbloquear" icon="pi pi-unlock"
+                                (click)="telaDesbloqueioLaudo(item.laudos.numeroVistoria)"
+                                style="margin-left: 5px;"></button>
+                            <!-- <button pButton [hidden]="item.regras.bloqueiaLaudoSupervisao" class="ui-button-danger"
+                                title="Bloquear laudo por supervisão" icon="pi pi-lock"
+                                (click)="confirmaBloqueio(item.laudos.numeroVistoria)"
+                                style="margin-left: 5px;"></button> -->
+                            <button pButton *ngIf="item.regras.desvincularLaudo" class="ui-button-success"
+                                title="Desvincular laudo" icon="pi pi-refresh"
+                                (click)="confirmaDesvinculo(item.laudos.numeroVistoria)"
+                                style="margin-left: 5px;"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</p-panel>
+
+<p-confirmDialog #cd header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <button type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"></button>
+    </p-footer>
+</p-confirmDialog>
+
+<p-dialog header="Detalhe da Vistoria" [(visible)]="detalheLaudo" positionTop="100" [modal]="true" [responsive]="true"
+    [style]="{maxHeight: '90vh', minHeight : '200px',width: '50vw', minWidth: '200px'}" closable="true">
+
+    <p-table [value]="logsDetalhes">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 70px; text-align: center">Detalhes</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>
+                    {{item}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>
+
+<p-dialog header="Desbloqueio de Laudo" [(visible)]="blockLaudo" [modal]="true" [responsive]="true"
+    [style]="{width: '1000px', minWidth: '200px'}" closable="true">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <p-fieldset>
+                <p-header>Dados da Vistoria</p-header>
+                <div class="p-grid">
+                    <div class="p-col-1">
+                        <label class="label">Vistoria:</label>
+                        <div class="info">{{laudofull?.laudo?.CODIGO_LVPRE}}</div>
+                    </div>
+                    <div class="p-col-2">
+                        <label class="label">Data da Vistoria:</label>
+                        <div class="info">{{laudofull?.laudo?.DT_VSPRE | date : 'dd/mm/yyyy'}}</div>
+                    </div>
+                    <div class="p-col-2">
+                        <label class="label">Chassi:</label>
+                        <div class="info">{{laudofull?.veiculo?.codigo_chassi}}</div>
+                    </div>
+                    <div class="p-col-1">
+                        <label class="label">Placa:</label>
+                        <div class="info">{{laudofull?.veiculo?.placa_veiculo}}</div>
+                    </div>
+                    <div class="p-col-4">
+                        <label class="label">Modelo:</label>
+                        <div class="info">{{laudofull?.veiculo?.modelo_veiculo}}</div>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+    <div class="p-grid" style="margin: 10px 0px 0px 12px;">
+        <label for="motivo" class="label">Motivo desbloqueio:</label>
+        <div class="p-col-5">
+            <input pInputText id="motivo" type="text" [(ngModel)]="laudofull.laudo.DS_MOTV_RCLSF_VSPRE" />
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="desbloqueiaLaudo(laudofull)"
+            label="Desbloquear"></button>
+        <button type="button" pButton icon="pi pi-times" class="ui-button-secondary" (click)="blockLaudo=false"
+            label="Fechar"></button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Alterar Data da Vistoria" [(visible)]="alteraData" [modal]="true" [responsive]="true"
+    [style]="{width: '700px', minWidth: '300px'}" [minY]="70" [positionTop]="50" closable="true">
+
+    <p-fieldset>
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-2">
+                <label class="label">Vistoria:</label>
+                <div class="info">{{laudofull?.laudo?.CODIGO_LVPRE}}</div>
+            </div>
+            <div class="ui-g-2">
+                <label class="label">Data Vistoria:</label>
+                <div class="info">{{laudofull?.laudo?.DT_VSPRE | date:'dd/MM/yyyy'}}</div>
+            </div>
+        </div>
+        <hr />
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-2">
+                <label class="label">Placa:</label>
+                <div class="info">{{laudofull?.veiculo?.placa_veiculo}}</div>
+            </div>
+            <div class="ui-g-3">
+                <label class="label">Chassi:</label>
+                <div class="info">{{laudofull?.veiculo?.codigo_chassi}}</div>
+            </div>
+            <div class="ui-g-7">
+                <label class="label">Modelo:</label>
+                <div class="info">{{laudofull?.veiculo?.modelo_veiculo}}</div>
+            </div>
+        </div>
+    </p-fieldset>
+
+    <div class="ui-g ui-fluid mt-2">
+        <div class="ui-g-4">
+            <label for="realizada" class="label">Data da Vistoria:</label>
+            <p-calendar id="realizada" [disabled]="habilitado" [(ngModel)]="laudofull.laudo.DT_VSPRE"></p-calendar>
+        </div>
+
+        <div class="ui-g-2">
+            <label for="hora" class="label">Hora:</label>
+            <p-calendar id="hora" [timeOnly]="true" [(ngModel)]="laudofull.laudo.DT_VSPRE" [disabled]="habilitado">
+            </p-calendar>
+        </div>
+    </div>
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="AtualizaLaudo()" label="Alterar"></button>
+        <button type="button" pButton icon="fa fa-times" class="ui-button-secondary" (click)="alteraData = false"
+            label="Cancelar"></button>
+    </p-footer>
+
+</p-dialog>

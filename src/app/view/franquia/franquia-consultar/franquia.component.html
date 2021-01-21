@@ -1,0 +1,255 @@
+<p-panel>
+
+    <p-header><b>Franquia</b></p-header>
+
+    <p-footer>
+        <div class="text-right">
+            <button type="button" pButton icon="pi pi-plus" class="ui-button-raised ui-button-secondary mr-2"
+                label="Novo" [routerLink]="['novo']"></button>
+        </div>
+    </p-footer>
+
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+
+            <p-fieldset>
+                <p-header>Consulta de Franquias</p-header>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-2">
+                        <label for="codigoPrestadora" class="label">Código Franquia:</label>
+                        <input id="codigoPrestadora" type="text" pInputText [(ngModel)]="filtro.codigo" />
+                    </div>
+
+                    <div class="ui-g-12 ui-md-4">
+                        <label for="razaoSocial" class="label">Nome Franquia:</label>
+                        <input id="razaoSocial" type="text" pInputText [(ngModel)]="filtro.nome" />
+                    </div>
+
+                    <div class="ui-g-12 ui-md-3 d-inline-flex">
+                        <button type="button" pButton title="Pesquisar" label="Pesquisar" icon="pi pi-search"
+                            class="ui-button-secondary align-self-end" style="width: 130px"
+                            (click)="pesquisarFranquia()"></button>
+                    </div>
+                </div>
+            </p-fieldset>
+
+
+            <p-table [value]="result" [responsive]="true" [paginator]="true" [rows]="filtro.itensPorPagina" [loading]="loading"
+                [totalRecords]="totalRegistros" [lazy]="true" (onLazyLoad)="loadFranquiasLazy($event)" class="m-5"
+                 emptymessage="Nenhum resultado">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Código Franquia</th>
+                        <th>Pestradora</th>
+                        <th>Data Ultima Alteração</th>
+                        <th>Responsável</th>
+                        <th>Status</th>
+                        <th style="width: 83px">Ações</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-item let-rowData >
+                    <tr>
+                        <td>{{ item.codigo}}</td>
+                        <td>{{ item.nome}}</td>
+                        <td>{{ item.dataUltimaAlter  | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ item.usuarioUltimaAlteracao}}</td>
+                        <td>{{ item.situacao == 0 ? "Inativo":"Ativo"}}</td>
+
+                        <button type="button" pButton class="ui-button-secondary mr-1" title="Editar Franquia"
+                            icon="pi pi-pencil" (click)="visualizarFranquia(item)">
+                        </button>
+                        <button type="button" pButton class="ui-button-secondary mr-1" title="Editar Franquia"
+                            icon="pi pi-search" (click)="selectFranquia($event, item)">
+                        </button>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+
+
+
+
+
+        </div>
+    </div>
+</p-panel>
+
+
+
+<p-dialog header="Franquia Detalhes" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+    [style]="{width: '500px'}" >
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Código Franquia:</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.codigo != null ? franquia.codigo : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Código da Prestadora</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.codigoPrestadora != null ? franquia.codigoPrestadora : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Cpf / Cnpj</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.cpfCnpj != null ? franquia.cpfCnpj : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Nome Fantasia</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.nome != null ? franquia.nome : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Endereço</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.logradouro != null ? franquia.logradouro : null }}
+        </div>
+    </div>
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Número Endereço</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.numLogradouro != null ? franquia.numLogradouro : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Complemento Endereço</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.dsCmploLogra != null ? franquia.dsCmploLogra : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Bairro</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.bairro != null ? franquia.bairro : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Cidade</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.cidade != null ? franquia.cidade : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">UF</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.uf != null ? franquia.uf : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">CEP</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.cep != null ? franquia.cep : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">CONTATO</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.contato != null ? franquia.contato : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">DDD</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.dddTel != null ? franquia.dddTel : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Telefone:</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.telEmpresa != null ? franquia.telEmpresa : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Ramal</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.ramal != null ? franquia.ramal : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Email</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.email != null ? franquia.email : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Pagamento Por Km Rodado</label>
+        </div>
+        <div class="ui-g-6">
+                {{franquia.pagKmRodado != null ? franquia.pagKmRodado : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Quantidade por Km Rodado</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.qtKmFrqdo != null ? franquia.qtKmFrqdo : null }}
+        </div>
+    </div>
+
+    <div class="ui-g-12">
+        <div class="ui-g-6">
+            <label class="label">Ativo</label>
+        </div>
+        <div class="ui-g-6">
+            {{franquia.ativo != null ? franquia.ativo : null }}
+        </div>
+    </div>
+
+</p-dialog>

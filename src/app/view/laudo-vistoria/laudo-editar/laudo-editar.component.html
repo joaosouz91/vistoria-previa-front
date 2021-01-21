@@ -1,0 +1,763 @@
+<div class="p-grid m-0">
+    <div class="p-col-fixed" style="width:300px">
+        <p-card>
+            <h6>Detalhe da Vistoria</h6>
+            <hr />
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <label class="label">Vistoria:</label>
+                    <div class="info">{{laudofull?.laudo?.CODIGO_LVPRE}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Voucher:</label>
+                    <div class="info">{{laudofull?.veiculo?.CODIGO_VOUCH}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Data da Vistoria:</label>
+                    <div class="info">{{laudofull?.laudo?.DT_VSPRE | date:'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Vistoriadora:</label>
+                    <div class="info">{{laudofull?.laudo?.NOME_EMPRESA_VISTORIA}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Data Transmissão:</label>
+                    <div class="info">{{laudofull?.laudo?.DT_TRNSM_VSPRE | date:'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Chassi:</label>
+                    <div class="info">{{laudofull?.veiculo?.codigo_chassi}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Placa:</label>
+                    <div class="info">{{laudofull?.veiculo?.placa_veiculo}}</div>
+                </div>
+                <div class="ui-g-12">
+                    <label class="label">Modelo:</label>
+                    <div class="info">{{laudofull?.veiculo?.modelo_veiculo}}</div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <div class="p-col">
+        <p-card>
+            <h6>Vistoria</h6>
+            <hr />
+            <p-tabView>
+                <p-tabPanel header="Dados Básicos" leftIcon="fa fa-info-circle">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <div
+                                *ngIf="laudofull.laudo.IC_LAUDO_VICDO === 'N' && laudofull.laudo.CODIGO_SITUCAO_BLQUE_VSPRE === 1 ; else elseAgeBlock">
+                                <label class="label">Situação:</label>
+                                <div class="info">Bloqueado</div>
+                            </div>
+                            <ng-template #elseAgeBlock>
+                                <label class="label">Situação:</label>
+                                <div class="info">{{laudofull?.laudo?.IC_LAUDO_VICDO | laudoSituacao}}</div>
+                            </ng-template>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Realizada em:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_VSPRE | date: 'dd/MM/yyyy HH:mm'}}</div>
+                        </div>
+
+                        <div class="ui-g-6">
+                            <label for="corretor" class="label">Corretor:</label>
+                            <div class="ui-inputgroup">
+                                <input pInputText id="corretor" type="text" size="30" [(value)]="nomeCorretor" />
+                                <input hidden=true pInputText id="corretor" type="text" size="30"
+                                    [(ngModel)]="laudofull.laudo.CODIGO_CORRETOR_SEGURADO" />
+                                <button pButton type="button" icon="pi pi-search" [disabled]="laudofull.editar"
+                                    (click)="showDialogEditarCorretor()"></button>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Data Bloqueio:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_LIMIT_BLQUE_VSPRE | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Solicitante:</label>
+                            <div class="info">{{laudofull?.laudo?.NM_SOLTT_VSPRE}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="cod-cliente" class="label">Código Cliente:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_CLIENTE}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Item:</label>
+                            <div class="info">{{laudofull?.laudo?.NR_ITSEG}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Negócio:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_NGOCO}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Endosso:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_ENDOSSO}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label class="label">Status Vistoria:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_SITUCAO_VSPRE}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Vistoriador:</label>
+                            <div class="info">{{laudofull?.laudo?.CODIGO_VSTRO}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">Local da Vistoria:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_LOCAL_VSPRE}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">CEP Local:</label>
+                            <div class="info">{{laudofull?.laudo?.NR_CEP_LOCAL_VSPRE}}</div>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label class="label">KM p/ Realização:</label>
+                            <div class="info">{{laudofull?.laudo?.QT_KM_RALZO}}</div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label class="label">Finalidade:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_FINALIDADE_VSPRE}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Motivo Frustração:</label>
+                            <div class="info">{{laudofull?.laudo?.DESCRICAO_MOTV_VSTRI_FRUDA}}</div>
+                        </div>
+                        <div class="ui-g-2">
+                            <label class="label">Reclassificação:</label>
+                            <div class="info">{{laudofull?.laudo?.DT_RCLSF_VSPRE | date:'dd/MM/yyyy'}}</div>
+                        </div>
+                        <div class="ui-g-6">
+                            <label for="motivo" class="label">Motivo Status:</label>
+                            <div class="info">{{laudofull?.laudo?.DS_MOTV_RCLSF_VSPRE}}</div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Dados Proponente" leftIcon="fa fa-user">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-4">
+                            <label for="proponente" class="label">Proponente:</label>
+                            <input pInputText readonly=“habilitado” id="proponente" type="text" size="30"
+                                [(ngModel)]="laudofull.proponente.NM_PRPNT" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="cpf" class="label">CPF/CNPJ:</label>
+                            <p-inputMask id="cpf" readonly=“habilitado” size="11"
+                                [(ngModel)]="laudofull.proponente.NR_CPF_PRPNT" mask="999.999.999-42" unmask=true>
+                            </p-inputMask>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="dataNascimento" class="label">Data Nascimento:</label>
+                            <p-calendar id="dataNascimento" [showIcon]="true" showButtonBar="true"
+                                [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030"
+                                [(ngModel)]="laudofull.proponente.DT_NASCM_PRPNT"></p-calendar>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="estadoCivil" class="label">Estado Civil:</label>
+                            <p-dropdown id="estadoCivil" [options]="ecs"
+                                [(ngModel)]="laudofull.proponente.TP_ESTAD_CIVIL_PRPNT" placeholder="Selecionar"
+                                appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="telefone" class="label">Telefone:</label>
+                            <input pInputText id="telefone" type="text"
+                                [(ngModel)]="laudofull.proponente.NR_TELEF_PRPNT" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="cep" class="label">CEP:</label>
+                            <input pInputText id="cep" type="text" [(ngModel)]="laudofull.proponente.NR_CEP" />
+                        </div>
+
+                        <div class="ui-g-4">
+                            <label for="endereco" class="label">Endereço:</label>
+                            <input pInputText id="endereco" type="text" [(ngModel)]="laudofull.proponente.DS_ENDER" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="bairro" class="label">Bairro:</label>
+                            <input pInputText id="bairro" type="text" [(ngModel)]="laudofull.proponente.NM_BAIRR" />
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="cidade" class="label">Cidade:</label>
+                            <input pInputText id="cidade" type="text" [(ngModel)]="laudofull.proponente.NM_CIDAD" />
+                        </div>
+
+                        <div class="ui-g-1">
+                            <label for="uf_proponente" class="label">UF:</label>
+                            <p-dropdown name="uf_proponente" [options]="ufs" [autoDisplayFirst]="false"
+                                [(ngModel)]="laudofull.proponente.SG_UNIDD_FEDRC" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="cnh" class="label">Número da CNH:</label>
+                            <input pInputText id="cnh" type="text" [(ngModel)]="laudofull.proponente.CD_CNH_PRPNT" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="ufcnh" class="label">UF CNH:</label>
+                            <p-dropdown name="ufcnh" [options]="ufs" [autoDisplayFirst]="false"
+                                [(ngModel)]="laudofull.proponente.SG_UNIDD_FEDRC_CNH_PRPNT" appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="dataHabilitacao" class="label">Data 1ª Habilitação:</label>
+                            <p-calendar id="dataHabilitacao" [showIcon]="true" showButtonBar="true"
+                                [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030"
+                                [(ngModel)]="laudofull.proponente.DT_PRMRA_HBLTC_PRPNT">
+                            </p-calendar>
+                        </div>
+
+                        <div class="ui-g-6">
+                            <label for="profissional" class="label">Atividade Profissional:</label>
+                            <input pInputText id="profissional" type="text"
+                                [(ngModel)]="laudofull.proponente.DS_ATIVD_PROFL_PRPNT" />
+                        </div>
+                    </div>
+                    <hr />
+                    <p-fieldset>
+                        <p-header>Dados do Condutor</p-header>
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-4">
+                                <label for="profissional" class="label">Nome do Condutor:</label>
+                                <input pInputText id="profissional" type="text"
+                                    [(ngModel)]="laudofull.proponente.NM_CODUT" />
+                            </div>
+
+                            <div class="ui-g-2">
+                                <label for="profissional" class="label">CPF:</label>
+                                <p-inputMask id="cpf" [(ngModel)]="laudofull.proponente.NR_CPF_CODUT"
+                                    mask="999.999.999-99" unmask=true></p-inputMask>
+                            </div>
+
+                            <div class="ui-g-2">
+                                <label for="profPropo" class="label">Data Nascimento:</label>
+                                <p-calendar id="dt_nasc_cond" [(ngModel)]="laudofull.proponente.DT_NASCM_CODUT"
+                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030"
+                                    [showIcon]="true"></p-calendar>
+                            </div>
+
+                            <div class="ui-g-2">
+                                <label for="estadoCivilprop" class="label">Estado Civil:</label>
+                                <p-dropdown id="estadoCivilprop" [options]="ecs"
+                                    [(ngModel)]="laudofull.proponente.TP_ESTAD_CIVIL_CODUT" placeholder="Selecionar"
+                                    appendTo="body">
+                                </p-dropdown>
+                            </div>
+
+                            <div class="ui-g-2">
+                                <label for="tipoCond" class="label">Qualificação:</label>
+                                <p-dropdown [options]="tipoCondutor" [(ngModel)]="laudofull.proponente.TP_CODUT_VEICU"
+                                    placeholder="Selecionar" appendTo="body"></p-dropdown>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-2">
+                                <label for="profissional" class="label">Número da CNH:</label>
+                                <input pInputText id="profissional" type="text"
+                                    [(ngModel)]="laudofull.proponente.CD_CNH_CODUT" />
+                            </div>
+
+                            <div class="ui-g-2">
+                                <label for="profCondut" class="label" style="white-space: nowrap;">Data 1ª
+                                    Habilitação:</label>
+                                <p-calendar id="dt_1_h_con" [(ngModel)]="laudofull.proponente.DT_PRMRA_HBLTC_CODUT"
+                                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2030"
+                                    [showIcon]="true"> </p-calendar>
+                            </div>
+                        </div>
+                    </p-fieldset>
+                </p-tabPanel>
+
+                <p-tabPanel header="Dados Veiculo" leftIcon="fa fa-car">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-6">
+                            <label for="marcaModelo" class="label">Marca/Modelo:</label>
+                            <p-dropdown name="marcaModelo" [options]="modelos" filter="true"
+                                [(ngModel)]="laudofull.veiculo.codigo_modelo_veiculo" appendTo="body">
+                                <ng-template let-item pTemplate="selectedItem">
+                                    {{item.value}} - {{item.label}}
+                                </ng-template>
+                                <ng-template let-item pTemplate="item">
+                                    {{item.value}} - {{item.label}}
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="fabricante" class="label">Fabricante:</label>
+                            <p-dropdown name="fabricante" [options]="fabricantes" filter="true"
+                                (onChange)="carregaModeloFabricantes()"
+                                [(ngModel)]="laudofull.veiculo.codigo_fabricante" appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="anoModelo" class="label">Ano Modelo:</label>
+                            <input pInputText id="anoModelo" type="text"
+                                [(ngModel)]="laudofull.veiculo.ano_modelo_veiculo" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="anofabricante" class="label">Ano Fabricação:</label>
+                            <input pInputText id="anofabricante" type="text"
+                                [(ngModel)]="laudofull.veiculo.ano_fab_veiculo" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-1">
+                            <label for="carga" class="label">Carga:</label>
+                            <p-dropdown name="carga" [options]="simNao" [(ngModel)]="laudofull.veiculo.icVeicuCarga"
+                                appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="placa" class="label">Placa:</label>
+                            <input pInputText id="placa" type="text" [(ngModel)]="laudofull.veiculo.placa_veiculo" />
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="chassi" class="label">Chassi:</label>
+                            <input pInputText id="chassi" type="text" [(ngModel)]="laudofull.veiculo.codigo_chassi" />
+                        </div>
+
+                        <div class="ui-g-4">
+                            <label for="dutNome" class="label">DUT em nome de:</label>
+                            <input pInputText id="dutNome" type="text" [(ngModel)]="laudofull.veiculo.nmDutVeicu" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="dut" class="label">DUT número:</label>
+                            <input pInputText id="dut" type="text" [(ngModel)]="laudofull.veiculo.dut_veiculo" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="expedido" class="label">Expedido em:</label>
+                            <p-calendar id="expedido" [showIcon]="true" showButtonBar="true" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1900:2030"
+                                [(ngModel)]="laudofull.veiculo.data_exp_dut"></p-calendar>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="dutCpf" class="label">CNPJ/CPF DUT:</label>
+                            <input pInputText id="dutCpf" type="text" [(ngModel)]="laudofull.veiculo.cnpj_dut" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="Cpf" class="label">CPF:</label>
+                            <input pInputText id="Cpf" type="text" [(ngModel)]="laudofull.veiculo.cpf_dut" />
+                        </div>
+
+                        <div class="ui-g-1">
+                            <label for="ufdadoveic" class="label">UF:</label>
+                            <p-dropdown name="ufdadoveic" [options]="ufs" [autoDisplayFirst]="false"
+                                [(ngModel)]="laudofull.veiculo.uf_dut" appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="cidade" class="label">Cidade:</label>
+                            <input pInputText id="cidade" type="text" [(ngModel)]="laudofull.veiculo.cidade_dut" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="renavan" class="label">Renavan:</label>
+                            <input pInputText id="renavan" type="text" [(ngModel)]="laudofull.veiculo.renavam" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="alienado" class="label">Alienado a:</label>
+                            <input pInputText id="alienado" type="text" [(ngModel)]="laudofull.veiculo.nmAlienVeicu" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="cor" class="label">Cor:</label>
+                            <input pInputText id="cor" type="text" [(ngModel)]="laudofull.veiculo.cor_veiculo" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="corTipo" class="label">Tipo Cor:</label>
+                            <p-dropdown name="corTipo" [options]="tipoCor" [(ngModel)]="laudofull.veiculo.tpPnturVeicu"
+                                appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="combustivel" class="label">Combustível:</label>
+                            <p-dropdown name="combustivel" [options]="combustiveis"
+                                [(ngModel)]="laudofull.veiculo.tpCmbst" appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="tipoCambio" class="label">Tipo Câmbio:</label>
+                            <p-dropdown name="tipoCambio" [options]="tipoCambio"
+                                [(ngModel)]="laudofull.veiculo.tpCamboVeicu" appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="numeroMotor" class="label">Número Motor:</label>
+                            <input pInputText id="numeroMotor" type="text"
+                                [(ngModel)]="laudofull.veiculo.codigo_motor" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="quilometragem" class="label">Quilometragem:</label>
+                            <input pInputText id="quilometragem" type="text"
+                                [(ngModel)]="laudofull.veiculo.qntd_km_rodado" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="quantidadePortas" class="label">Qtd. Portas:</label>
+                            <input pInputText id="quantidadePortas" type="text"
+                                [(ngModel)]="laudofull.veiculo.qtPortaVeicu" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="passageiros" class="label">Qtd. Passageiros:</label>
+                            <input pInputText id="passageiros" type="text"
+                                [(ngModel)]="laudofull.veiculo.qtLotacVeicu" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="cilindro" class="label">Qtd. Cilindros:</label>
+                            <input pInputText id="cilindro" type="text"
+                                [(ngModel)]="laudofull.veiculo.qnts_cilindrada" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="vq" class="label">Número VQ/VB:</label>
+                            <input pInputText id="vq" type="text"
+                                [(ngModel)]="laudofull.laudo.CODIGO_VSTRI_QUALD_BLNDO" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="datavq" class="label">Data VQ/VB:</label>
+                            <p-calendar id="datavq" [showIcon]="true" showButtonBar="true" [monthNavigator]="true"
+                                [yearNavigator]="true" yearRange="1900:2030"
+                                [(ngModel)]="laudofull.laudo.DT_VSTRI_QUALD_BLNDO"></p-calendar>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="cambio" class="label">Número Câmbio:</label>
+                            <input pInputText id="cambio" type="text"
+                                [(ngModel)]="laudofull.veiculo.codigo_Cambio_veiculo" />
+                        </div>
+
+                        <div class="ui-g-4">
+                            <label for="utilizacao" class="label">Utilização:</label>
+                            <p-dropdown name="utilizacao" [options]="tipoveiculoUtilizacao"
+                                [(ngModel)]="laudofull.veiculo.tpUtlzcVeicu" appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-4">
+                            <label for="garagem" class="label">Garagem:</label>
+                            <p-dropdown name="garagem" [options]="tipoGaragem"
+                                [(ngModel)]="laudofull.laudo.TP_GUARD_VEICU" appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Veículo Carga" leftIcon="fa fa-truck">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="numero" class="label">Número Carroceria:</label>
+                            <input pInputText id="numero" type="text" size="20"
+                                [(ngModel)]="laudofull.veiculo.codigo_veiculo" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="carroceria" class="label">Marca Carroceria:</label>
+                            <input pInputText id="carroceria" type="text" size="20"
+                                [(ngModel)]="laudofull.veiculo.marca_carro_carga" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="formato" class="label" style="white-space: nowrap;">Formato Carroceria:</label>
+                            <p-dropdown name="formato" [options]="formatoCarroceria"
+                                [(ngModel)]="laudofull.veiculo.cdFormaCarroVeicu" placeholder="Selecione..."
+                                appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="material" class="label">Material Carroceria:</label>
+                            <p-dropdown name="material" [options]="tipoMaterialCarroceria"
+                                [(ngModel)]="laudofull.veiculo.tpMtralCargaVeicu" placeholder="Selecione..."
+                                appendTo="body"></p-dropdown>
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="tpcarroceria" class="label">Tipo Carroceria:</label>
+                            <p-dropdown name="tpcarroceria" [options]="carrocerias"
+                                [(ngModel)]="laudofull.veiculo.tpCarroVeicu" placeholder="Selecione..." appendTo="body">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-2">
+                            <label for="eixo" class="label">Eixo Traseiro:</label>
+                            <input pInputText id="eixo" type="text" size="20"
+                                [(ngModel)]="laudofull.veiculo.codigo_eixo_tras" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="dianteiro" class="label">Eixo Dianteiro:</label>
+                            <input pInputText id="dianteiro" type="text" size="20"
+                                [(ngModel)]="laudofull.veiculo.codigo_eixo_diant" />
+                        </div>
+
+                        <div class="ui-g-2">
+                            <label for="transformado" class="label" style="white-space: nowrap;">Indica
+                                Transformado:</label>
+                            <p-dropdown name="transformado" [options]="simNao"
+                                [(ngModel)]="laudofull.veiculo.icVeicuTrafm" placeholder="Selecione..." appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="cabine" class="label">Tipo de Cabine:</label>
+                            <p-dropdown name="cabine" [options]="tipoCabine"
+                                [(ngModel)]="laudofull.veiculo.tpCabinVeicu" placeholder="Selecione..." appendTo="body">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="ui-g-3">
+                            <label for="rodoar" class="label">Possui Rodoar:</label>
+                            <p-dropdown name="rodoar" [options]="simNao" [(ngModel)]="laudofull.veiculo.icRodoar"
+                                placeholder="Selecione..." appendTo="body"></p-dropdown>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Parecer Técnico" leftIcon="fa fa-list">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <p-table [scrollable]="true" scrollHeight="400px" [value]="pareceres"
+                                [(selection)]="laudofull.pareceres" dataKey="CD_PATEC_VSPRE"
+                                emptymessage="Nenhum resultado">
+
+                                <ng-template pTemplate="caption">
+                                    <div class="row">
+                                        <div class="col-md-2" style="text-align: left;">
+                                            <label>Status Vistoria:</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p-dropdown [options]="statusParecerTecnico" appendTo="body"
+                                                [(ngModel)]="laudofull.laudo.CODIGO_SITUCAO_VSPRE"></p-dropdown>
+                                        </div>
+                                    </div>
+                                </ng-template>
+
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width:50px">
+                                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                        </th>
+                                        <th style="text-align: center;width:60px" pResizableColumn>Código</th>
+                                        <th style="text-align: center;width:150px" pResizableColumn>Classificação
+                                        </th>
+                                        <th pResizableColumn>Descrição</th>
+                                    </tr>
+                                </ng-template>
+
+                                <ng-template pTemplate="body" let-item>
+                                    <tr [pSelectableRow]="item.CD_PATEC_VSPRE">
+                                        <td style="width:50px">
+                                            <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                                        </td>
+                                        <td style="text-align: center;width:60px">{{item.CD_PATEC_VSPRE}}</td>
+                                        <td style="text-align: center;width:150px">{{item.CD_CLASF_PATEC.descricao}}
+                                        </td>
+                                        <td>{{item.DS_PATEC_VSPRE}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="Peças Avariadas" leftIcon="fa fa-ban">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <p-table [responsive]="true" [value]="laudofull.avarias" [autoLayout]="true"
+                                [paginator]="true" [rows]="10" emptymessage="Nenhum resultado">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Descrição da Peça</th>
+                                        <th>Tipo de Avaria</th>
+                                        <th>Total de horas</th>
+                                        <th style="width: 100px;">
+                                            <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()"
+                                                label="Adicionar"></button>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item>
+                                    <tr>
+                                        <td>{{item[0]}}</td>
+                                        <td>{{item[1]}}</td>
+                                        <td>{{item[3]}}</td>
+                                        <td>{{item[4]}}</td>
+                                        <td style="text-align: center;">
+                                            <button type="button" pButton icon="pi pi-pencil"
+                                                (click)="showModal(item)"></button>
+                                            &nbsp;
+                                            <button type="button" class="ui-button-danger" pButton icon="fa fa-times"
+                                                (click)="deleteAvaria(item)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+            <p-footer>
+                <div class="text-right">
+                    <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar"
+                        [routerLink]="['/laudo-vistoria']" [state]="{filtroLaudo:filtroLaudo}"></button>
+                    <button type="button" pButton icon="pi pi-check" (click)="atualizar()" class="ui-button-secondary"
+                        label="Salvar" style="margin-left: 5px"></button>
+                </div>
+            </p-footer>
+        </p-card>
+    </div>
+</div>
+
+<p-dialog header="Corretor" [(visible)]="display" [modal]="true" [responsive]="true"
+    [style]="{width: '700px', minWidth: '200px'}" [minY]="70" [baseZIndex]="10000" closable="true">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-fieldset>
+                <p-header>Consulta de Corretores</p-header>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-4">
+                        <label for="idCorretor" class="label">Código:</label>
+                        <input pInputText id="idCorretor" type="text" size="30"
+                            [(ngModel)]="corretorFiltro.idCorretor" />
+                    </div>
+
+                    <div class="ui-g-8">
+                        <label for="nomeCorretor" class="label">Nome:</label>
+                        <input pInputText id="nomeCorretor" type="text" size="30"
+                            [(ngModel)]="corretorFiltro.nomeCorretor" />
+                    </div>
+
+                    <div class="ui-g-12">
+                        <button type="button" pButton title="Pesquisar" label="Pesquisar" icon="pi pi-search"
+                            class="ui-button-secondary" style="width: 130px"
+                            (click)="botaoPesquisarCorretor()"></button>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        <div class="ui-g-12">
+            <p-table [responsive]="true" [value]="corretores" [paginator]="true" [rows]="6"
+                emptymessage="Nenhum resultado">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 80px; text-align: center">Código</th>
+                        <th style="text-align: center">Nome Corretor</th>
+                        <th style="width: 60px; text-align: center"> </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td style="text-align: center">{{ item.idCorretor }}</td>
+                        <td style="text-align: center">{{ item.nomeCorretor }}</td>
+                        <td style="text-align: center">
+                            <button type="button" pButton title="Selecionar" icon="pi pi-check"
+                                class="ui-button-secondary" (click)="botaoSelecionaCorretor(item)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-times" class="ui-button-secondary" (click)="display=false"
+            label="Fechar"></button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="showModelNew" [modal]="true" [responsive]="true" [style]="{width: '700px', minWidth: '300px'}"
+    [minY]="70" [positionTop]="50" header="Avaria">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-7">
+            <label class="label">Descrição da Peça:</label>
+            <p-dropdown [options]="pecas" [(ngModel)]="avariaLaudoVistoriaPrevia.cdPecaAvada" appendTo="body"
+                filter="true" [autoDisplayFirst]="false"></p-dropdown>
+        </div>
+        <div class="ui-g-5">
+            <label class="label">Tipo de Avaria:</label>
+            <p-dropdown [options]="avarias" [(ngModel)]="avariaLaudoVistoriaPrevia.tpAvariVeicu" appendTo="body"
+                filter="true" [autoDisplayFirst]="false"></p-dropdown>
+        </div>
+    </div>
+    <hr />
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-3">
+            <label class="label">Horas Funilaria:</label>
+            <input pInputText type="number" [(ngModel)]="avariaLaudoVistoriaPrevia.qtHoraFunil" />
+        </div>
+        <div class="ui-g-3">
+            <label class="label">Horas Elétrica:</label>
+            <input pInputText type="number" [(ngModel)]="avariaLaudoVistoriaPrevia.qtHoraEletr" />
+        </div>
+        <div class="ui-g-3">
+            <label class="label">Horas Tapeçaria:</label>
+            <input pInputText type="number" [(ngModel)]="avariaLaudoVistoriaPrevia.qtHoraTapec" />
+        </div>
+        <div class="ui-g-3">
+            <label class="label">Horas Pintura:</label>
+            <input pInputText type="number" [(ngModel)]="avariaLaudoVistoriaPrevia.qtHoraPntur" />
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="fa fa-check" (click)="saveAvaria()" label="Salvar"></button>
+        <button type="button" pButton icon="fa fa-times" class="ui-button-secondary" (click)="showModelNew = false"
+            label="Cancelar"></button>
+    </p-footer>
+</p-dialog>

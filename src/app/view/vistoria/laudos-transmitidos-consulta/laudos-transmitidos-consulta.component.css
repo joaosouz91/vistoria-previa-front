@@ -1,0 +1,14 @@
+.link {
+    background-color: transparent;
+    border: 0;
+    color : #116fbf;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+    position: relative;
+}
+
+.link:hover {
+    color : #116fbf;
+    text-decoration: underline;
+}

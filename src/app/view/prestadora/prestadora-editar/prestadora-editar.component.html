@@ -1,0 +1,119 @@
+<p-panel>
+    <p-header><b>Prestadora</b></p-header>
+    <p-footer>
+        <div class="text-right">
+            <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+                label="Voltar" [routerLink]="['/prestadora']"></button>
+            <button type="button" pButton icon="pi pi-save" class="ui-button-raised ui-button-secondary mr-2"
+                label="Salvar" (click)="salvar()"></button>
+            <btn-listar-postos *ngIf="isEdicao" [codigoPrestadora]="prestadora.codigoPrestadora" [label]="true"
+                class="ui-button-raised">
+            </btn-listar-postos>
+        </div>
+    </p-footer>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-12">
+            <p-fieldset>
+                <p-header>Detalhe da Prestadora</p-header>
+                <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+                    <div class="ui-g-6">
+                        <label for="codigoAgrupamento" class="label">Código Agrupamento:</label>
+                        <input pInputText id="codigoAgrupamento" type="text" [(ngModel)]="prestadora.codigoPrestadora"
+                            [disabled]="isEdicao" />
+                    </div>
+                    <div class="ui-g-6">
+                        <label for="codigoPrestadora" class="label">Código Prestadora:</label>
+                        <input pInputText id="codigoPrestadora" type="text" [(ngModel)]="prestadora.voucher" />
+                    </div>
+                    <div class="ui-g-4">
+                        <label for="tipoPessoa" class="label">Tipo Pessoa:</label>
+                        <p-selectButton id="tipoPessoa" [options]="tiposPessoa" [(ngModel)]="prestadora.tipoPessoa">
+                        </p-selectButton>
+                    </div>
+                    <div class="ui-g-8">
+                        <div *ngIf="prestadora.tipoPessoa === 'F'; else elseAgeBlock">
+                            <label for="cpf" class="label">CPF:</label>
+                            <p-inputMask id="cpf" type="text" [(ngModel)]="prestadora.cpfCnpj" mask='999.999.999-99'>
+                            </p-inputMask>
+                        </div>
+                        <ng-template #elseAgeBlock>
+                            <label for="cnpj" class="label">CNPJ:</label>
+                            <p-inputMask id="cnpj" type="text" [(ngModel)]="prestadora.cpfCnpj"
+                                mask='99.999.999/9999-99'>
+                            </p-inputMask>
+                        </ng-template>
+                    </div>
+                    <div class="ui-g-12">
+                        <label for="razaoSocial" class="label">Razão Social:</label>
+                        <input pInputText id="razaoSocial" type="text" [(ngModel)]="prestadora.razaoSocial" />
+                    </div>
+                    <div class="ui-g-4 ui-md-2">
+                        <label for="ddd" class="label">DDD:</label>
+                        <input pInputText id="ddd" type="text" [(ngModel)]="prestadora.dddTelefone" />
+                    </div>
+                    <div class="ui-g-8 ui-md-4">
+                        <label for="telefone" class="label">Telefone:</label>
+                        <input pInputText id="telefone" type="text" [(ngModel)]="prestadora.telefoneComercial" />
+                    </div>
+                    <div class="ui-g-4 ui-md-2">
+                        <label for="ramal" class="label">Ramal:</label>
+                        <input pInputText id="ramal" type="text" [(ngModel)]="prestadora.ramal" />
+                    </div>
+                    <div class="ui-g-8 ui-md-4">
+                        <label for="contato" class="label">Contato:</label>
+                        <input pInputText id="contato" type="text" [(ngModel)]="prestadora.contato" />
+                    </div>
+                    <div class="ui-g-12">
+                        <label for="email" class="label">E-mail:</label>
+                        <input pInputText id="email" type="text" [(ngModel)]="prestadora.email" />
+                    </div>
+                    <div class="ui-g-12">
+                        <label for="site" class="label">Site:</label>
+                        <input pInputText id="site" type="text" [(ngModel)]="prestadora.site" />
+                    </div>
+                </div>
+                <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+                    <div class="ui-g-12">
+                        <label for="logradouro" class="label">Logradouro:</label>
+                        <input pInputText id="logradouro" type="text" [(ngModel)]="prestadora.logradouro" />
+                    </div>
+                    <div class="ui-g-4">
+                        <label for="numero" class="label">Número:</label>
+                        <input pInputText id="numero" type="text" [(ngModel)]="prestadora.numeroLogradouro" />
+                    </div>
+                    <div class="ui-g-8">
+                        <label for="complemento" class="label">Complemento:</label>
+                        <input pInputText id="complemento" type="text" [(ngModel)]="prestadora.complemento" />
+                    </div>
+                    <div class="ui-g-8">
+                        <label for="bairro" class="label">Bairro:</label>
+                        <input pInputText id="bairro" type="text" [(ngModel)]="prestadora.bairro" />
+                    </div>
+                    <div class="ui-g-4">
+                        <label for="cep" class="label">CEP:</label>
+                        <input pInputText id="cep" type="text" [(ngModel)]="prestadora.cep" />
+                    </div>
+                    <div class="ui-g-8">
+                        <label for="cidade" class="label">Cidade:</label>
+                        <input pInputText id="cidade" type="text" [(ngModel)]="prestadora.cidade" />
+                    </div>
+                    <div class="ui-g-4">
+                        <label for="estado" class="label">Estado:</label>
+                        <p-dropdown id="estado" [options]="ufs" [(ngModel)]="prestadora.uf" styleClass="w-100">
+                        </p-dropdown>
+                    </div>
+                    <div class="ui-g-6">
+                        <label for="dataInicioAtividade" class="label">Data Início Atividade:</label>
+                        <p-calendar id="dataInicioAtividade" [(ngModel)]="prestadora.dataInicioAtividade"
+                            [showIcon]="true" showButtonBar="true" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                    <div class="ui-g-6">
+                        <label for="dataDesativacao" class="label">Data Desativação:</label>
+                        <p-calendar id="dataDesativacao" [(ngModel)]="prestadora.dataDesativacao"
+                            [showIcon]="true" showButtonBar="true" dateFormat="dd/mm/yy"></p-calendar>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+    </div>
+</p-panel>

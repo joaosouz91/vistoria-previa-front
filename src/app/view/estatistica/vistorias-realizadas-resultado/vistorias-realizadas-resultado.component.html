@@ -1,0 +1,127 @@
+<p-panel>
+  <p-header><b>Vistorias Realizadas - Resultados</b></p-header>
+  
+    <div class="ui-g ui-fluid">
+
+        <div class="ui-g-12 ui-md-12">
+            
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Prestadora:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{nmPrestadora}}</label>
+                </div>
+            </div> 
+
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Periodo:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{loadedParams.month}}/{{loadedParams.year}}</label>
+                </div>
+            </div>
+
+            <!--<div class="p-field p-grid">
+                <label class="p-col-fixed" style="width:100px">Firstname</label>
+                <label class="p-col-fixed" style="width:100px">Firstname</label>
+            </div>
+            <div class="p-field p-grid">
+                <label class="p-col-fixed" style="width:100px">Lastname</label>
+                <div class="p-col">
+                    <input id="lastname3" type="text" pInputText> 
+                </div>
+            </div>-->
+
+        </div>
+
+        <div class="ui-g-12 ui-md-12" [style]="{'margin-top': '0px !important'}">
+
+            <p-table [value]="estatisticaVistoriasRealizadasList" [responsive]="true" [paginator]="true" [rows]="filtro.itensPorPagina" 
+                [rowsPerPageOptions]="[10, 20, 50, 100]" [pageLinks]="10" [loading]="loading" [autoLayout]="true"
+                [totalRecords]="filtro.totalRegistros" class="m-5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Código</th>
+                        <th>Prestadora</th>
+                        <th>Bloqueados</th>
+                        <th>Não Vinculados</th>
+                        <th>Vinculados</th>
+                        <th>Total</th>
+                        <th>Aceitável</th>
+                        <th>Sujeito Análise</th>
+                        <th>Recusado</th>
+                        <th>Liberado</th>
+                        <th>Aceitação Forçada</th>
+                        <th>Regularizados</th>
+                        <th>Total</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.codigoPrestadora}}</td>
+                        <td>{{item.nomePrestadora}}</td>
+                        <td>
+                            <span *ngIf="item.quantLaudosBloqueados>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'BL')">{{item.quantLaudosBloqueados}}</a></span>
+                            <span *ngIf="item.quantLaudosBloqueados==0">{{item.quantLaudosBloqueados}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantLaudosNaoVinculados>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'NV')">{{item.quantLaudosNaoVinculados}}</a></span>
+                            <span *ngIf="item.quantLaudosNaoVinculados==0">{{item.quantLaudosNaoVinculados}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantLaudosVinculados>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'VI')">{{item.quantLaudosVinculados}}</a></span>
+                            <span *ngIf="item.quantLaudosVinculados==0">{{item.quantLaudosVinculados}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.totalSituacaoLaudo>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'SI')">{{item.totalSituacaoLaudo}}</a></span>
+                            <span *ngIf="item.totalSituacaoLaudo==0">{{item.totalSituacaoLaudo}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantAceitavel>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'AC')">{{item.quantAceitavel}}</a></span>
+                            <span *ngIf="item.quantAceitavel==0">{{item.quantAceitavel}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantSujeitoAnalise>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'SA')">{{item.quantSujeitoAnalise}}</a></span>
+                            <span *ngIf="item.quantSujeitoAnalise==0">{{item.quantSujeitoAnalise}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantRecusados>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'RE')">{{item.quantRecusados}}</a></span>
+                            <span *ngIf="item.quantRecusados==0">{{item.quantRecusados}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantLiberado>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'LI')">{{item.quantLiberado}}</a></span>
+                            <span *ngIf="item.quantLiberado==0">{{item.quantLiberado}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantAceitacaoForcada>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'AF')">{{item.quantAceitacaoForcada}}</a></span>
+                            <span *ngIf="item.quantAceitacaoForcada==0">{{item.quantAceitacaoForcada}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantRegularizado>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'BL')">{{item.quantRegularizado}}</a></span>
+                            <span *ngIf="item.quantRegularizado==0">{{item.quantRegularizado}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.totalStatusLaudo>0"><a class="link" (click)="forwardDetalhe(item.codigoPrestadora, 'ST')">{{item.totalStatusLaudo}}</a></span>
+                            <span *ngIf="item.totalStatusLaudo==0">{{item.totalStatusLaudo}}</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <p-footer>
+        <div class="ui-g">
+            <div class="ui-g-6">
+                <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar" (click)="voltarPagina()"></button>
+            </div>
+            <div class="ui-g-6" [style]="{'text-align':'right'}">
+                <!--<button type="button" pButton label="Exportar CSV" (click)="exportCsv()" icon="pi pi-search" class="ui-button-text ui-clickable"></button>-->
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+            </div>
+        </div>
+    </p-footer>
+
+</p-panel>

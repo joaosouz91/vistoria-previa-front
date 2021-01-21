@@ -1,0 +1,79 @@
+<p-panel>
+  <p-header><b>Posto</b></p-header>
+  <p-footer>
+    <div class="text-right">
+      <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+        label="Voltar" (click)="voltarPagina()"></button>
+      <button type="button" pButton icon="pi pi-save" class="ui-button-raised ui-button-secondary mr-2"
+        label="Salvar" (click)="salvar()"></button>
+    </div>
+  </p-footer>
+  <div class="ui-g-12 ui-fluid">
+    <p-fieldset>
+      <p-header>Detalhe do Posto</p-header>
+      <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+        <div class="ui-g-6">
+          <label for="codigoPrestadora" class="label">Código da Empresa:</label>
+          <input pInputText id="codigoPrestadora" type="text" [ngModel]="posto.codigoPrestadora" disabled="true" />
+        </div>
+        <div class="ui-g-6">
+          <label for="codigoPosto" class="label">Código do Posto:</label>
+          <input pInputText id="codigoPosto" type="text" [ngModel]="posto.codigoPosto" disabled="true" />
+        </div>
+        <div class="ui-g-12">
+          <label for="nome" class="label">Nome do Posto:</label>
+          <input pInputText id="nome" type="text" [(ngModel)]="posto.nome" />
+        </div>
+        <div class="ui-g-12 ui-md-4">
+          <label for="telefone" class="label">Telefone:</label>
+          <input pInputText id="telefone" type="text" [(ngModel)]="posto.telefone" />
+        </div>
+        <div class="ui-g-12 ui-md-8">
+          <label for="email" class="label">E-mail:</label>
+          <input pInputText id="email" type="text" [(ngModel)]="posto.email" />
+        </div>
+        <div class="ui-g-12">
+          <label for="funcionamento" class="label">Horário do Posto:</label>
+          <input pInputText id="funcionamento" type="text" [(ngModel)]="posto.funcionamento" />
+        </div>
+      </div>
+      <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+        <div class="ui-g-12 ui-md-12">
+          <label for="endereco" class="label">Endereço:</label>
+          <input pInputText id="endereco" type="text" [(ngModel)]="posto.logradouro" />
+        </div>
+        <div class="ui-g-8">
+          <label for="bairro" class="label">Bairro:</label>
+          <input pInputText id="bairro" type="text" [(ngModel)]="posto.bairro" />
+        </div>
+        <div class="ui-g-4">
+          <label for="cep" class="label">CEP:</label>
+          <input pInputText id="cep" type="text" [(ngModel)]="posto.cep" />
+        </div>
+        <div class="ui-g-8">
+          <label for="cidade" class="label">Cidade:</label>
+          <input pInputText id="cidade" type="text" [(ngModel)]="posto.cidade" />
+        </div>
+        <div class="ui-g-4">
+          <label for="estado" class="label">Estado:</label>
+          <p-dropdown id="estado" [options]="ufs" [(ngModel)]="posto.uf" styleClass="w-100">
+          </p-dropdown>
+        </div>
+        <div class="ui-g-12">
+          <label for="logradouroReferencia" class="label">Referência:</label>
+          <input pInputText id="logradouroReferencia" type="text" [(ngModel)]="posto.logradouroReferencia" />
+        </div>
+      </div>
+      <div class="ui-g-6 ui-sm-12 ui-fluid p-0">
+        <div class="ui-g-6">
+          <p-checkbox [(ngModel)]="posto.atendeVeiculoCarga" binary="true" label="Atende Veículo Carga"
+            labelStyleClass="font-weight-bold"></p-checkbox>
+        </div>
+        <div class="ui-g-6">
+          <p-checkbox [(ngModel)]="posto.ativo" binary="true" label="Ativo" labelStyleClass="font-weight-bold">
+          </p-checkbox>
+        </div>
+      </div>
+    </p-fieldset>
+  </div>
+</p-panel>

@@ -1,0 +1,168 @@
+<p-panel>
+    <p-header><b>Motivo Vistoria Previa: </b>{{detalheDoItem.tituloDaTela}}</p-header>
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-6">
+
+            <p-fieldset>
+                <p-header>Dados da Proposta</p-header>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="placa-chassi" class="label">Placa / Chassi:</label>
+                        <output id="placa-chassi" class="form-control output" [ngStyle]="{'color': mudarCordaFontPlacaChassi, 'border-color': mudarCordaFontPlacaChassi}">
+                            {{detalheDoItem.propostaPlaca}} / {{detalheDoItem.propostaChassi}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Nome Proponente:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{detalheDoItem.propostaNomeCliente}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">CPF / CNPJ Proponene:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output" [ngStyle]="{'color': mudarCordaFontCpfCnpj, 'border-color': mudarCordaFontCpfCnpj}">
+                            {{detalheDoItem.propsotaClienteCpfCnpj}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsRmidaColunTipo" class="label">Fabricante:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output" [ngStyle]="{'color': mudarCordaFontFabricante, 'border-color': mudarCordaFontFabricante}">
+                            {{detalheDoItem.propostaFabricante}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="tpFechmRestr" class="label">Marca / Modelo:</label>
+                        <output id="tpFechmRestr" class="form-control output" [ngStyle]="{'color': mudarCordaFontCodigoModelo, 'border-color': mudarCordaFontCodigoModelo}">
+                            {{detalheDoItem.propostaModelo}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsRmidaColunTipo" class="label">Ano Modelo:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output" [ngStyle]="{'color': mudarCordaFontAnoModelo, 'border-color': mudarCordaFontAnoModelo}">
+                            {{detalheDoItem.propostaAnoModelo}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsJustfLibecRestr" class="label">Combustivel:</label>
+                        <output id="dsJustfLibecRestr" class="form-control output" [ngStyle]="{'color': mudarCordaFontCombustivel, 'border-color': mudarCordaFontCombustivel}">
+                            {{detalheDoItem.propostaCombustivel}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsJustfLibecRestr" class="label">Item:</label>
+                        <output id="dsJustfLibecRestr" class="form-control output">
+                            {{detalheDoItem.nrItseg}}
+                        </output>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+
+        <div class="ui-g-12 ui-md-6">                    
+            <p-fieldset>
+                <p-header>Dados da Vistoria Prévia - Laudo: {{detalheDoItem.codigoLaudo}}</p-header>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="placa-chassi" class="label">Placa / Chassi:</label>
+                        <output id="placa-chassi" class="form-control output" [ngStyle]="{'color': mudarCordaFontPlacaChassi, 'border-color': mudarCordaFontPlacaChassi}">
+                            {{detalheDoItem.laudoPlaca}} / {{detalheDoItem.laudoChassi}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Nome CRLV:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{detalheDoItem.laudoNomeCrlv}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">CPF / CNPJ CRLV:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output" [ngStyle]="{'color': mudarCordaFontCpfCnpj, 'border-color': mudarCordaFontCpfCnpj}">
+                            {{detalheDoItem.laudoCpfCnpjCrlv}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsRmidaColunTipo" class="label">Fabricante:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output" [ngStyle]="{'color': mudarCordaFontFabricante, 'border-color': mudarCordaFontFabricante}">
+                            {{detalheDoItem.laudoFabricante}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="tpFechmRestr" class="label">Marca / Modelo:</label>
+                        <output id="tpFechmRestr" class="form-control output" [ngStyle]="{'color': mudarCordaFontCodigoModelo, 'border-color': mudarCordaFontCodigoModelo}">
+                            {{detalheDoItem.laudoModelo}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsRmidaColunTipo" class="label">Ano Modelo:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output" [ngStyle]="{'color': mudarCordaFontAnoModelo, 'border-color': mudarCordaFontAnoModelo}">
+                            {{detalheDoItem.laudoAnoModelo}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsJustfLibecRestr" class="label">Combustivel:</label>
+                        <output id="dsJustfLibecRestr" class="form-control output" [ngStyle]="{'color': mudarCordaFontCombustivel, 'border-color': mudarCordaFontCombustivel}">
+                            {{detalheDoItem.laudoCombustivel}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-12">
+                        <label for="dsJustfLibecRestr" class="label">Status Atual:</label>
+                        <output id="dsJustfLibecRestr" class="form-control output">
+                            {{detalheDoItem.laudoStatus}}
+                        </output>
+                    </div>
+                </div>    
+            </p-fieldset>
+        </div>
+        
+        <div class="ui-g-12 ui-md-12" *ngIf="detalheDoItem.liberarPrestadora">
+            <h6 class="first">Site do Prestador Para Consulta do Laudo: <a style="color: #4272DB" class="btn" (click)="botaoSitePrestadora()">{{detalheDoItem.nomePrestadora}}</a></h6>
+        </div>
+
+        <div class="ui-g-12 ui-md-12" *ngIf="detalheDoItem.liberarTabelaReclassificacao">
+            <h6 class="first">Detalhe da Reclassificação da Vistoria</h6>
+
+            <p-table [value]="detalheDoItems">
+                <ng-template pTemplate="header">
+                    <tr>                        
+                        <th style="text-align: center">Justificativa</th>
+                        <th style="width: 100px; text-align: center">Data</th>
+                        <th style="width: 160px; text-align: center">Responsável</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>                        
+                        <td style="text-align: center">{{item.justificativa}}</td>
+                        <td style="text-align: center">{{item.dataDaAcao | date: 'dd/MM/yyyy'}}</td>
+                        <td style="text-align: center">{{item.responsavel}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+           
+    </div>
+    
+    <p-footer>
+        <button type="button" pButton icon="pi pi-search" class="ui-button-secondary" (click)="abrirNovaPopupBotaoConsultarVistorias()" label="Consultar Vistorias" style="margin-left: 10px;"></button>
+        <button type="button" pButton icon="pi pi-check" class="ui-button-secondary" *ngIf="liberarBotaoDispensa" label="Dispensar" style="margin-left: 5px;" (click)="botaoDispensar()"></button>
+        <button type="button" pButton icon="pi pi-spinner" class="ui-button-secondary" *ngIf="liberarBotaoReclassificar" label="Reclassificar" style="margin-left: 5px;" (click)="botaoReclassificacao()"></button>
+        <button type="button" pButton icon="pi pi-exclamation-triangle" class="ui-button-secondary" *ngIf="liberarBotaoLiberarDivergencia" label="Liberar Divergência" style="margin-left: 5px;" (click)="botaoDivergencia()"></button>
+        <button type="button" pButton icon="pi pi-list" class="ui-button-secondary" *ngIf="detalheDoItem.liberaDetalhe" label="Detalhe" style="margin-left: 5px;" (click)="botaoDetalheLaudo()"></button>
+    </p-footer>
+</p-panel>

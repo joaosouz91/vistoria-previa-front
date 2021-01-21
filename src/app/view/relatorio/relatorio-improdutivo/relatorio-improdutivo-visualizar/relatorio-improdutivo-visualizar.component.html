@@ -1,0 +1,124 @@
+<p-panel header="Relatório - Improdutivos">
+    <p-fieldset legend="Vistoria Improdutivas Valores">
+        <div class="p-grid">
+            <div class="p-col-fixed font-weight-bold">Referência:</div>
+            <div class="p-col">{{relatorio?.descricaoDataReferencia}}</div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed font-weight-bold" style="width: 200px;">Qtd. de Vistorias Improdutivas:</div>
+            <div class="p-col">{{relatorio?.qtdTotalImprodutivoOriginal}}</div>
+        </div>
+        <div class="p-grid text-danger">
+            <div class="p-col-fixed font-weight-bold" style="width: 200px;">Total previsto de improdutivas:</div>
+            <div class="p-col">{{relatorio?.valorTotalImprodutivoOriginal | currency:'BRL'}}</div>
+        </div>
+    </p-fieldset>
+    <p-fieldset legend="Vistorias Improdutivas">
+        <p-table [value]="relatorio?.listaLoteImprodutivoAux" [(selection)]="selectedLotes"
+            dataKey="loteLaudoImprodutivo.idLoteLaudoImpdv" [scrollable]="true" scrollHeight="50vh">
+            <ng-template pTemplate="colgroup">
+                <colgroup>
+                    <col style="width:40%">
+                    <col style="width:9%">
+                    <col style="width:9%">
+                    <col style="width:15%">
+                    <col style="width:9%">
+                    <col style="width:9%">
+                    <col style="width:9%">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Corretor</th>
+                    <th>Sucursal</th>
+                    <th>Qtd.Vistorias</th>
+                    <th>Valor Total R$</th>
+                    <th>Franq.</th>
+                    <th>Editar</th>
+                    <th>Retirar <p-tableHeaderCheckbox *ngIf="relatorio!.permiteEdicao"></p-tableHeaderCheckbox>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                <tr>
+                    <td>{{rowData.loteLaudoImprodutivo.cdCrtorSegur}} - {{rowData.nomeCorretor}}</td>
+                    <td class="text-right">{{rowData?.loteLaudoImprodutivo.cdSucsl}}</td>
+                    <td class="text-right">{{rowData?.loteLaudoImprodutivo.qtLaudoSelec}}</td>
+                    <td class="text-right"
+                        [ngClass]="rowData.valorTotalImprodutivoFinal > 0 ? 'text-danger' : 'text-info'">
+                        {{(rowData?.valorTotalImprodutivoFinal < 0 ? (rowData.valorTotalImprodutivoFinal * -1) : rowData.valorTotalImprodutivoFinal) | currency:'BRL'}}
+                        {{rowData.valorTotalImprodutivoFinal > 0 ? 'D' : 'C'}}
+                    </td>
+                    <td class="text-center">
+                        {{rowData?.loteLaudoImprodutivo?.icFranq == 'S' ? 'Abaixo' : 'Acima'}}
+                    </td>
+                    <td class="text-center">
+                        <button *ngIf="relatorio.permiteEdicao" pButton type="button" icon="pi pi-pencil"
+                            class="ui-button-raised ui-button-secondary"
+                            (click)="exibirDetalheCorretor(rowData.loteLaudoImprodutivo.idLoteLaudoImpdv)"></button>
+                        <button *ngIf="!relatorio.permiteEdicao" pButton type="button" icon="pi pi-search"
+                            class="ui-button-raised ui-button-secondary"
+                            (click)="exibirDetalheCorretor(rowData.loteLaudoImprodutivo.idLoteLaudoImpdv)"></button>
+                    </td>
+                    <td class="text-center">
+                        <p-tableCheckbox [value]="rowData" [disabled]="!relatorio.permiteEdicao" [index]="rowIndex">
+                        </p-tableCheckbox>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-fieldset>
+    <p-fieldset legend="Total">
+        <div class="p-grid">
+            <div class="p-col-fixed font-weight-bold" style="width: 200px;">Total de Vistorias Calculadas:</div>
+            <div class="p-col-1">{{relatorio?.qtdTotalLaudoCalculado}}</div>
+            <div class="p-col-fixed font-weight-bold">Valor Total:</div>
+            <div class="p-col">{{relatorio?.valorTotalLaudoCalculado | currency:'BRL'}}</div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed font-weight-bold" style="width: 200px;">Total de Vistorias Incluídas:</div>
+            <div class="p-col-1">{{relatorio?.qtdTotalLaudoIncluido}}</div>
+            <div class="p-col-fixed font-weight-bold">Valor Total:</div>
+            <div class="p-col">{{relatorio?.valorTotalLaudoIncluido | currency:'BRL'}}</div>
+        </div>
+        <div class="p-grid">
+            <div class="p-col-fixed font-weight-bold" style="width: 200px;">Total de Vistorias Estornadas:</div>
+            <div class="p-col-1">{{relatorio?.qtdTotalLaudoEstornado}}</div>
+            <div class="p-col-fixed font-weight-bold">Valor Total:</div>
+            <div class="p-col">{{relatorio?.valorTotalLaudoEstornado | currency:'BRL'}}</div>
+        </div>
+        <div class="p-grid text-info font-weight-bold" style="font-size: 16px;">
+            <div class="p-col-fixed" style="width: 230px;">Total final de improdutivas:</div>
+            <div class="p-col">{{relatorio?.valorTotalImprodutivoFinal | currency:'BRL'}}</div>
+        </div>
+    </p-fieldset>
+    <p-footer>
+        <div class="text-right">
+            <button pButton type="submit" icon="pi pi-save" class="ui-button-raised ui-button-secondary mr-2"
+                label="Salvar" (click)="salvarLotes()" *ngIf="relatorio!.permiteEdicao"></button>
+            <button pButton type="button" icon="pi pi-check" class="ui-button-raised ui-button-secondary mr-2"
+                label="Transmitir" (click)="dialogTransmitir=true" *ngIf="relatorio!.permiteEdicao"></button>
+            <button pButton type="reset" icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+                label="Voltar" (click)="voltar.emit()"></button>
+        </div>
+    </p-footer>
+</p-panel>
+<p-dialog header="Consultar Corretor" [(visible)]="dialogTransmitir" [modal]="true" [responsive]="true"
+    [style]="{width: '500px'}" appendTo="body" position="top">
+    <div class="ui-fluid">
+        <div class="p-field p-grid">
+            <div class="p-col">
+                <p>ATENÇÃO:</p>
+                <p>Após a transmissão os Lotes de {{relatorio?.descricaoDataReferencia}} não poderão mais ser editados.
+                </p>
+                <p>Deseja realizar a transmissão dos Lotes ?</p>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <button type="button" (click)="transmitirLotes()" pButton icon="pi pi-check" class="ui-button-secondary"
+            label="Sim"></button>
+        <button type="button" (click)="dialogTransmitir=false" pButton icon="pi pi-times" class="ui-button-secondary"
+            label="Não"></button>
+    </p-footer>
+</p-dialog>

@@ -1,0 +1,179 @@
+<p-panel>
+    <p-header><b>Detalhes Laudo Transmitido</b></p-header>
+
+        <table class="table-sm" style="margin-top: 15px;">
+            <tbody>
+                <tr *ngFor="let item of laudoDetalhe.dadosCabecalhoDTO | keyvalue">
+                    <th>{{formatKey(item.key)}}</th>
+                    <td>{{formatValue(item.value)}}</td>
+                </tr>
+                <tr>
+                    <th>Prestadora</th>
+                    <td>{{nmPrestadora}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    <div class="p-grid">
+
+        <div class="p-col">
+  
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Dados Básicos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.dadosBasicosDTO | keyvalue">
+                        <ng-container *ngIf="item.key != 'observacao'">
+                            <th>{{formatKey(item.key)}}</th>
+                            <td>{{formatValue(item.value)}}</td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Proponente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.proponenteDTO | keyvalue">
+                        <th>{{formatKey(item.key)}}</th>
+                        <td>{{formatValue(item.value)}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Proprietário</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.proprietarioDTO | keyvalue">
+                        <th>{{formatKey(item.key)}}</th>
+                        <td>{{formatValue(item.value)}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Condutor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.condutorDTO | keyvalue">
+                        <th>{{formatKey(item.key)}}</th>
+                        <td>{{formatValue(item.value)}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Veículo</th>
+                    </tr>
+                </thead>
+                <tr *ngFor="let item of laudoDetalhe.veiculoDTO | keyvalue">
+                    <ng-container
+                        *ngIf="item.key != 'acessorioDTOlist' && item.key != 'avariaDTOlist' && item.key != 'veiculoCargaDTO'">
+                        <th>{{formatKey(item.key)}}</th>
+                        <td>{{formatValue(item.value)}}</td>
+                    </ng-container>
+                </tr>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Veículo Carga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.veiculoDTO.veiculoCargaDTO | keyvalue">
+                        <th>{{formatKey(item.key)}}</th>
+                        <td>{{formatValue(item.value)}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Acessórios</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <ng-container *ngFor="let items of laudoDetalhe.veiculoDTO.acessorioDTOlist ; let i = index">
+                        <tr *ngFor="let item of items | keyvalue">
+                            <th>{{formatKey(item.key)}} {{i+1}}</th>
+                            <td>{{formatValue(item.value)}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Avarias</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let items of laudoDetalhe.veiculoDTO.avariaDTOlist ; let i = index">
+                        <tr *ngFor="let item of items | keyvalue">
+                            <th>{{formatKey(item.key)}} {{i+1}}</th>
+                            <td>{{formatValue(item.value)}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Informações Técnicas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of laudoDetalhe.codigosInformacoesTecnicas ; let i = index">
+                        <th>Informação {{i + 1}}</th>
+                        <td>{{item}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered table-sm" style="margin-top: 15px;">
+                <thead class="thead-light">
+                    <tr>
+                        <th colspan="2">Observações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container
+                        *ngIf="laudoDetalhe.dadosBasicosDTO.observacao != null && laudoDetalhe.dadosBasicosDTO.observacao != '' ">
+                        <tr>
+                            <th>Observação</th>
+                            <td>{{laudoDetalhe.dadosBasicosDTO.observacao}}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</p-panel>

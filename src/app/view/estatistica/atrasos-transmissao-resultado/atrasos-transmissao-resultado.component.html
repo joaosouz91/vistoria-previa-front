@@ -1,0 +1,135 @@
+<p-panel>
+    <p-header><b>Atrasos Transmissão - Resultados</b></p-header>
+
+    <div class="ui-g ui-fluid">
+
+        <div class="ui-g-12 ui-md-12">
+
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Prestadora:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{nmPrestadora}}</label>
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-1" [style]="{ 'text-align': 'right'}">
+                    <label class="label">Periodo:</label>
+                </div>
+                <div class="p-col-3" [style]="{ 'text-align': 'left'}">
+                    <label class="label">{{loadedParams.month}}/{{loadedParams.year}}</label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ui-g-12 ui-md-12" [style]="{'margin-top': '0px !important'}">
+
+            <p-table [value]="atrasoTransmissaoAgrupamentoList" [responsive]="true" [paginator]="true"
+                [rows]="filtro.itensPorPagina" [rowsPerPageOptions]="[10, 20, 50, 100]" [pageLinks]="10"
+                [loading]="loading" [autoLayout]="true" [totalRecords]="filtro.totalRegistros" class="m-5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Prestadora</th>
+                        <th>Até {{paramVP.qtDiaPrmroRnkngEmissRelat}} dias</th>
+                        <th>Até {{paramVP.qtDiaPrmroRnkngEmissRelat}} dias %</th>
+                        <th>De {{paramVP.qtDiaSegdoRnkngEmissRelat}} dias</th>
+                        <th>De {{paramVP.qtDiaSegdoRnkngEmissRelat}} dias %</th>
+                        <th>De 4 a {{paramVP.qtDiaTerceRnkngEmissRelat}} dias</th>
+                        <th>De 4 a {{paramVP.qtDiaTerceRnkngEmissRelat}} dias %</th>
+                        <th>De 6 a {{paramVP.qtDiaQurtoRnkngEmissRelat}} dias</th>
+                        <th>De 6 a {{paramVP.qtDiaQurtoRnkngEmissRelat}} dias %</th>
+                        <th>De 16 a {{paramVP.qtDiaUltmoRnkngEmissRelat}} dias</th>
+                        <th>De 16 a {{paramVP.qtDiaUltmoRnkngEmissRelat}} dias %</th>
+                        <th>Maior {{paramVP.qtDiaUltmoRnkngEmissRelat}} dias</th>
+                        <th>Maior {{paramVP.qtDiaUltmoRnkngEmissRelat}} dias %</th>
+                        <th>Total</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.nomeEmpresa}}</td>
+                        <td>
+                            <span *ngIf="item.quantDiaPrimeiroRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, 0, paramVP.qtDiaPrmroRnkngEmissRelat)">{{item.quantDiaPrimeiroRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantDiaPrimeiroRankEmissaoRelatorio==0">{{item.quantDiaPrimeiroRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemPrimeiroRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantDiaSegundoRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, paramVP.qtDiaPrmroRnkngEmissRelat, paramVP.qtDiaSegdoRnkngEmissRelat)">{{item.quantDiaSegundoRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantDiaSegundoRankEmissaoRelatorio==0">{{item.quantDiaSegundoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemSegundoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantDiaTerceiroRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, paramVP.qtDiaSegdoRnkngEmissRelat, paramVP.qtDiaTerceRnkngEmissRelat)">{{item.quantDiaTerceiroRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantDiaTerceiroRankEmissaoRelatorio==0">{{item.quantDiaTerceiroRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemTerceiroRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantDiaQuartoRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, paramVP.qtDiaTerceRnkngEmissRelat, paramVP.qtDiaQurtoRnkngEmissRelat)">{{item.quantDiaQuartoRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantDiaQuartoRankEmissaoRelatorio==0">{{item.quantDiaQuartoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemQuartoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantDiaQuintoRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, paramVP.qtDiaQurtoRnkngEmissRelat, paramVP.qtDiaUltmoRnkngEmissRelat)">{{item.quantDiaQuintoRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantDiaQuintoRankEmissaoRelatorio==0">{{item.quantDiaQuintoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemQuintoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.quantUltimoRankEmissaoRelatorio>0"><a class="link" (click)="forwardDetalhe(item.codigoEmpresa, paramVP.qtDiaUltmoRnkngEmissRelat, 0)">{{item.quantUltimoRankEmissaoRelatorio}}</a></span>
+                            <span *ngIf="item.quantUltimoRankEmissaoRelatorio==0">{{item.quantUltimoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span>{{item.porcentagemUltimoRankEmissaoRelatorio}}</span>
+                        </td>
+                        <td>
+                            <span *ngIf="item.totalGeral>0"><a class="link" (click)="forwardDetalheTotal(item.codigoEmpresa)">{{item.totalGeral}}</a></span>
+                            <span *ngIf="item.totalGeral==0">{{item.totalGeral}}</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr *ngIf="linhaComTotal != null">
+                        <td><span>Total</span></td>
+                        <td><span>{{linhaComTotal.quantTotalPrimeiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemPrimeiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.quantTotalSegundoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemSegundoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.quantTotalTerceiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemTerceiroRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.quantTotalQuartoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemQuartoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.quantTotalQuintoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemQuintoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.quantTotalUltimoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.porcentagemUltimoRankEmissaoRelatorio}}</span></td>
+                        <td><span>{{linhaComTotal.totalGeral}}</span></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <p-footer>
+        <div class="ui-g">
+            <div class="ui-g-6">
+                <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar"
+                    (click)="voltarPagina()"></button>
+            </div>
+            <div class="ui-g-6" [style]="{'text-align':'right'}">
+            </div>
+        </div>
+    </p-footer>
+
+</p-panel>

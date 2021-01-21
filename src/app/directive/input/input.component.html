@@ -1,0 +1,17 @@
+
+
+<div class="form-group" [class.has-success]="input.valid && (input.dirty || input.touched) "
+
+    [class.has-error]="!input.valid && (input.dirty || input.touched)" >
+    <label class="label"  for="inputSucess"> {{label}}</label>
+    <ng-content>
+            
+    </ng-content>
+    <span class="help-block" *ngIf="input.valid && (input.dirty || input.touched)"> <i class="fas fa-dove" style="color: #20c997;"></i> </span>
+    <span class="help-block" *ngIf="(!input.valid && (input.dirty || input.touched))"> <i class="pi pi-times">{{erroMessage}} </i> </span>
+ 
+</div>
+
+
+
+

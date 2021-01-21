@@ -1,0 +1,130 @@
+<div class="ui-g ui-fluid">
+    <div class="ui-g-8 ui-md-8" style="margin : auto;">
+        <p-panel>
+            <p-header><b>Peças Vistoria Prévia</b></p-header>
+
+            <div class="p-grid">
+                <div class="p-col-8">
+                    <p-fieldset>
+                        <div class="p-grid">
+                            <label for="descricao" class="label-3">Descrição:</label>
+                            <div class="p-col">
+                                <input id="descricao" [(ngModel)]="filter.descricao" type="text" pInputText
+                                    maxlength="100" />
+                            </div>
+                        </div>
+                        <div class="p-grid">
+                            <label for="situacao" class="label-3 m-5">Inativo:</label>
+                            <div class="p-col" [style]="{'display': 'flex', 'align-items': 'center'}">
+                                <p-checkbox id="situacao" [(ngModel)]="filter.inativo" [binary]="true"></p-checkbox>
+                            </div>
+                        </div>
+                    </p-fieldset>
+                </div>
+
+                <div class="p-col-4" style="display: inline-block; align-self: flex-end;">
+                    <div class="ui-g-5" [style]="{'text-align':'right'}">
+                        <button type="button" pButton label="Pesquisar" icon="pi pi-search" (click)="onPesquisar()"
+                            class="ui-button-text ui-clickable"></button>
+                    </div>
+                    <div class="ui-g-5" [style]="{'text-align':'right'}">
+                        <button type="button" pButton label="Adicionar" icon="pi pi-plus"
+                            class="ui-button-success ui-clickable" (click)="onClickAdicionar()"></button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12" [style]="{'margin': 'auto'}">
+
+                    <p-table #dt [value]="pecasList" [responsive]="true" [autoLayout]="true" [rows]="10"
+                        [paginator]="true" [rowsPerPageOptions]="[10, 20, 50, 100]" [loading]="loading">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Situação</th>
+                                <th style="text-align: center;">Ação</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item>
+                            <tr>
+                                <td>{{item.cdPecaAvada}}</td>
+                                <td>{{item.dsPecaAvada}}</td>
+                                <td>{{item.cdSitucPeca == 'A' ? 'Ativo' : 'Inativo'}}</td>
+                                <td style="text-align: center;">
+                                    <button type="button" style="font-size: 8px" pButton icon="pi pi-pencil"
+                                        (click)="onClickEdit(item.cdPecaAvada, item.dsPecaAvada, item.cdSitucPeca)" pTooltip="Editar"
+                                        class="ui-button-text ui-clickable"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                </div>
+            </div>
+
+        </p-panel>
+    </div>
+
+    <p-dialog position="top" [draggable]="false" [(visible)]="modalVisible" modal="true" dismissableMask="true"
+        appendTo="body" [responsive]="true" [style]="{width: '500px'}">
+
+        <p-header>
+            <span>{{dialogHeaderText}}</span>
+        </p-header>
+
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <ng-container *ngIf="modalEditActive">
+                    <div class="p-grid">
+                        <label for="idSalvar" class="label-2">ID:</label>
+                        <div class="p-col-4">
+                            <input id="idSalvar" disabled type="text" value="90" pInputText maxlength="20" [(ngModel)]="modalId" />
+                        </div>
+                    </div>
+                </ng-container>
+                <div class="p-grid">
+                    <label for="descricaoSalvar" class="label-2">Descrição:</label>
+                    <div class="p-col">
+                        <input id="descricaoSalvar" disabled type="text" pInputText
+                            maxlength="100" [(ngModel)]="modalDescricao" [disabled]="!modalEditActive"/>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <label for="situacaoSalvar" class="label-2 m-5">Situação:</label>
+                    <div class="p-col-4">
+                        <p-dropdown id="situacaoSalvar" [options]="[{value:'A', label:'Ativo'}, {value:'I', label:'Inativo'}]"
+                            [(ngModel)]="modalSituacao" autoWidth="false" [style]="{'width':'100%'}"
+                            appendTo="body" [disabled]="!modalEditActive"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-12" style="margin : auto;">
+                    <div class="p-grid">
+                        <div class="p-col-6"></div>
+                        <div class="p-col-6" style="display: inline-block; align-self: flex-end;">
+                            <div class="ui-g-6 padding-zero" [style]="{'text-align':'right'}">
+                                <button type="button" pButton label="Cancelar" icon="pi pi-times-circle"
+                                    class="ui-button-secondary ui-clickable m-5" (click)="alterarStatusModal()"></button>
+                            </div>
+                            <div class="ui-g-6 padding-zero" [style]="{'text-align':'right'}">
+                                <button type="button" pButton label="Confirmar" icon="pi pi-check-circle"
+                                    class="ui-button ui-clickable m-5" (click)="onClickConfirmar()"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </p-footer>
+
+    </p-dialog>
+
+
+</div>

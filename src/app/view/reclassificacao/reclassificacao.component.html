@@ -1,0 +1,147 @@
+<p-panel>
+    <p-header><b>Motivo da Reclassificação</b></p-header>
+
+    <div class="ui-g ui-fluid">
+
+        <div class="ui-g-12 ui-md-12">            
+            <p-fieldset>
+                <p-header>Dados do Laudo</p-header>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="placa-chassi" class="label">Vistoria</label>
+                        <output id="placa-chassi" class="form-control output">
+                            {{reclasificacao.vistoria}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Data Transmissão:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{reclasificacao.dataTransmissao | date: 'dd/MM/yyyy'}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Emp. Vistoriadora:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{reclasificacao.empresaVistoriadora}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="dsRmidaColunTipo" class="label">Data Vistoria:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output">
+                            {{reclasificacao.dataVistoria | date: 'dd/MM/yyyy'}}   
+                        </output>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+
+        <div class="ui-g-12 ui-md-12">            
+            <p-fieldset>
+                <p-header>Dados do Veiculo</p-header>
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="placa-chassi" class="label">Chassi</label>
+                        <output id="placa-chassi" class="form-control output">
+                            {{reclasificacao.chassi}} 
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Placa:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{reclasificacao.placa}}
+                        </output>
+                    </div>
+                
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Ano Modelo:</label>
+                        <output id="codParecerLaudoAnteriorPendenciaAtual" class="form-control output">
+                            {{reclasificacao.anoModelo}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="dsRmidaColunTipo" class="label">CRLV:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output">
+                            {{reclasificacao.crlv}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="dsRmidaColunTipo" class="label">Expedido em:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output">
+                            {{reclasificacao.expedido | date: 'dd/MM/yyyy'}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="dsRmidaColunTipo" class="label">Nome CRLV:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output">
+                            {{reclasificacao.nomeCrlv}}
+                        </output>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-6">
+                        <label for="dsRmidaColunTipo" class="label">CPF / CNPJ:</label>
+                        <output id="dsRmidaColunTipo" class="form-control output">
+                            {{reclasificacao.cprfCnpj}}
+                        </output>
+                    </div>
+                </div>
+            </p-fieldset>
+        </div>
+        
+        <div class="ui-g-12 ui-md-12">
+            <h6 class="first">Informação Técnica</h6>
+
+            <p-table [value]="reclasificacao.parecerTecnicoVistoriaPrevias">
+                <ng-template pTemplate="header">
+                    <tr>                        
+                        <th style="width: 100px; text-align: center">Código</th>
+                        <th style="text-align: center">Descrição</th>                                                
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>                        
+                        <td style="text-align: center">{{item.cdPatecVspre}}</td>                        
+                        <td style="text-align: center">{{item.dsInforRecusAnalis}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        
+        <div class="ui-g-12 ui-md-12">
+            <p-fieldset>
+                <p-header>Reclassificação</p-header>
+
+                <div class="ui-g-12 ui-md-6">
+                    <label for="placa-chassi" class="label">Novo Status:</label>
+                    <p-dropdown [options]="selectItens" [(ngModel)]="comboNovoStatus" placeholder="Selecionar" autoWidth="false" [style]="{'width':'100%'}"></p-dropdown>
+                </div>
+                    
+                <div class="ui-g-12 ui-md-6">
+                    <label for="placa-chassi" class="label">Status Atual:</label>
+                    <output id="dsRmidaColunTipo" class="form-control output">
+                        {{reclasificacao.statusLaudo}}
+                    </output>
+                </div>
+
+                <div class="ui-g-12 ui-md-12">
+                    <label for="codParecerLaudoAnteriorPendenciaAtual" class="label">Justificativa:</label>
+                    <textarea rows="5" cols="30" [(ngModel)]="justificativa" maxlength="400" pInputTextarea></textarea>
+                </div>
+            </p-fieldset>                
+        </div>
+        
+    </div>    
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-secondary" label="Voltar" style="margin-left: 10px;" (click)="voltarPagina()"></button>        
+        <button type="button" pButton icon="pi pi-check" class="ui-button-secondary" label="Salvar" style="margin-left: 5px;" (click)="salvar()"></button>
+    </p-footer>
+</p-panel>

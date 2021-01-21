@@ -1,0 +1,32 @@
+<p-panel [style]="{'width':'500px', 'margin':'0 auto'}">
+    <p-header><b>Vistorias Realizadas</b></p-header>
+    
+    <div class="ui-fluid">
+        <div class="ui-g">
+
+            <div class="ui-g-12 ui-md-12">
+
+                <div class="ui-g-12 ui-md-12">
+                    <app-simple-date-picker (onMonthChange)="getDate($event)"></app-simple-date-picker>
+                </div>
+                
+                <div class="ui-g-12 ui-md-12">
+                    <label for="prestadoras" class="label">Prestadoras:</label>
+                    <p-dropdown appendTo="body" [options]="selectItens" [(ngModel)]="idPrestadora" 
+                    placeholder="Selecionar" autoWidth="false" (onChange)="onChangePrestadora()"></p-dropdown>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>   
+    
+    <p-footer>
+        <div class="ui-g">
+            <div class="ui-g-6"></div>
+            <div class="ui-g-6" [style]="{'text-align':'right'}">
+                <button type="button" pButton label="Pesquisar" [disabled]="!requiredFilled" (click)="onPesquisar()" icon="pi pi-search" class="ui-button-text ui-clickable"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-panel>

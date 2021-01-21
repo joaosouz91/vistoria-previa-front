@@ -1,0 +1,14 @@
+  <div class="p-grid">
+    <div class="p-col-6">
+      <label class="label">Ano:</label>
+      <p-dropdown appendTo="body" [options]="years" [(ngModel)]="selectedYear" placeholder="Selecione" 
+      optionLabel="label" (onChange)="setMonths()"></p-dropdown>
+    </div>
+  
+    <div class="p-col-6">
+      <label class="label">Mês:</label>
+      <p-dropdown appendTo="body" [options]="months" [(ngModel)]="selectedMonth" placeholder="Selecione" 
+      optionLabel="label" (onChange)="emitDate(null)" [disabled]="selectedYear == null"></p-dropdown>
+    </div>
+
+  </div>

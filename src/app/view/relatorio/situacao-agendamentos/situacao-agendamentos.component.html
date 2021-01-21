@@ -1,0 +1,181 @@
+<p-panel [style]="{'margin':'0 auto', 'width': 'auto'}">
+    <p-header><b>Relatório - Situação dos Agendamentos</b></p-header>
+
+    <div class="p-col-4">
+        <p-fieldset>
+            <p-header>Filtros</p-header>
+            <div class="p-grid">
+                <label for="voucher" class="label-5">Número de Voucher:</label>
+                <div class="p-col">
+                    <input id="voucher" type="text" pInputText pKeyFilter="pint" maxlength="15"
+                        [(ngModel)]="filter.numVoucher" />
+                </div>
+            </div>
+            <div class="p-grid">
+                <label for="corretor" class="label-5">Código Corretor:</label>
+                <div class="p-col">
+                    <input id="corretor" type="text" pInputText pKeyFilter="alphanum" maxlength="20"
+                        [(ngModel)]="filter.codCorretor" style="text-transform: uppercase;" />
+                </div>
+            </div>
+            <div class="p-grid">
+                <label for="prestadora" class="label-5">Prestadora:</label>
+                <div class="p-col-7">
+                    <p-dropdown id="prestadora" styleClass="w-100" [options]="prestadoras"
+                        [(ngModel)]="filter.idPrestadora" placeholder="Selecionar">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="p-grid">
+                <label for="situacao" class="label-5">Situação Vistoria:</label>
+                <div class="p-col">
+                    <p-dropdown appendTo="body" id="situacao" styleClass="w-100" [options]="situacoesVistoria"
+                        [(ngModel)]="filter.codSitVistoria" placeholder="Selecionar">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="p-grid">
+                <label for="periodo" class="label-5">Período Pesquisa:</label>
+                <div class="p-col">
+                    <p-calendar id="periodo" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                        selectionMode="range" [readonlyInput]="true" [showIcon]="true" showButtonBar="true"
+                        dateFormat="dd/mm/yy" [(ngModel)]="filter.periodo">
+                    </p-calendar>
+                </div>
+            </div>
+            <div class="p-grid" [style]="{'display': 'flex', 'align-items': 'center'}">
+            <label class="label-5" style="margin : 0rem!important">Agrupador por:</label>
+                <div class="p-col">
+                <p-radioButton name="agrupamento" value="V" label="Voucher" [(ngModel)]="filter.formaAgrupamento"
+                        inputId="voucher">
+                    </p-radioButton>
+                </div>
+                <div class="p-col">
+                    <p-radioButton name="agrupamento" value="P" label="Prestadora" [(ngModel)]="filter.formaAgrupamento"
+                        inputId="prestadora">
+                    </p-radioButton>
+                </div>
+            </div>
+        </p-fieldset>
+
+        <div class="p-grid">
+            <div class="p-col">
+                <div class="text-left mt-2">
+                    <button type="button" pButton icon="pi pi-search" class="p-button-raised p-button-secondary"
+                        (click)="onPesquisar()" label="Pesquisar" style="width: initial"></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="p-grid" *ngIf="relatorioAgendamento != null">
+        <div class="p-col-12">
+            <p-table #dt [value]="relatorioAgendamento" [responsive]="true" [paginator]="true" [rows]="10" class="m-5"
+                [rowsPerPageOptions]="[10, 20, 50, 100]" [autoLayout]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Voucher</th>
+                        <th>Corretor</th>
+                        <th>Prestadora</th>
+                        <th>Cliente</th>
+                        <th>Placa</th>
+                        <th>Chassi</th>
+                        <th>Situação</th>
+                        <th style="white-space: nowrap;">Data Emissão</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>
+                            <div *ngIf="item.cdVouch != null"><span>{{item.cdVouch}}</span></div>
+                            <div style="white-space: nowrap;" *ngIf="item.cdVouchAnter != null"><span
+                                    style="color:red">Ant: {{item.cdVouchAnter}}</span></div>
+                            <div style="white-space: nowrap;" *ngIf="item.cdVouchPosterior != null"><span
+                                    style="color:red">Reag: {{item.cdVouchPosterior}}</span></div>
+                        </td>
+                        <td style="white-space: nowrap;">{{ item.codNomeCorretor }}</td>
+                        <td>{{ item.nmRazaoSocialPrta }}</td>
+                        <td>{{ item.nmClien }}</td>
+                        <td>{{ item.cdPlacaVeicu }}</td>
+                        <td>{{ item.cdChassiVeicu }}</td>
+                        <td>{{ item.dsSitucAgend }}</td>
+                        <td>{{ item.dtUltmaAlterAgto | date:'dd/MM/yyyy' }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="ui-g-12" [style]="{'text-align':'right'}">
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL"
+                    (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="p-grid" *ngIf="prestadoraStatusDTO != null">
+        <div class="p-col-12">
+            <p-table #dt [value]="prestadoraStatusDTO.prestadoraStatusList" [responsive]="true" [paginator]="true" [rows]="10" class="m-5"
+                [rowsPerPageOptions]="[10, 20, 50, 100]" [autoLayout]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>PRESTADORA</th>
+                        <th>PEN</th>
+                        <th>RCB</th>
+                        <th>AGD</th>
+                        <th>RLZ</th>
+                        <th>RGD</th>
+                        <th>VFR</th>
+                        <th>FTR</th>
+                        <th>PEF</th>
+                        <th>LKX</th>
+                        <th>FTT</th>
+                        <th>CAN</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{item.prestadora.cdAgrmtVspre}} - {{item.prestadora.nmRazaoSocal}}</td>
+                        <td>{{item.contStatusPEN}}</td>
+                        <td>{{item.contStatusRCB}}</td>
+                        <td>{{item.contStatusAGD}}</td>
+                        <td>{{item.contStatusRLZ}}</td>
+                        <td>{{item.contStatusRGD}}</td>
+                        <td>{{item.contStatusVFR}}</td>
+                        <td>{{item.contStatusFTR}}</td>
+                        <td>{{item.contStatusPEF}}</td>
+                        <td>{{item.contStatusLKX}}</td>
+                        <td>{{item.contStatusFTT}}</td>
+                        <td>{{item.contStatusCAN}}</td>
+                        <td>{{item.totalAgtoPrestadora}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer" let-item>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusPEN}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusRCB}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusAGD}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusRLZ}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusRGD}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusVFR}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusFTR}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusPEF}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusLKX}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusFTT}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.contStatusCAN}}</td>
+                        <td>{{prestadoraStatusDTO.linhaComTotal.totalAgtoPrestadora}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="ui-g-12" [style]="{'text-align':'right'}">
+                <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="EXCEL"
+                    (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+            </div>
+        </div>
+
+    </div>
+
+
+</p-panel>

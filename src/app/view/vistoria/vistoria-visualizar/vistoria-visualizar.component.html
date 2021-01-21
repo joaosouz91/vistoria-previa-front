@@ -1,0 +1,206 @@
+<p-panel>
+  <p-header><b>Agendamento Vistoria Prévia</b></p-header>
+  <p-footer>
+    <div class="text-right">
+      <button type="button" pButton icon="pi pi-arrow-left" class="ui-button-raised ui-button-secondary mr-2"
+        label="Voltar" [routerLink]="['/vistoria']"></button>
+    </div>
+  </p-footer>
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12 ui-md-12">
+      <p-fieldset>
+        <p-header>Dados do Cliente</p-header>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-1">Cliente:</label>
+          <span class="ui-g-5">{{agendamento.vistoria?.nomeCliente}}</span>
+          <label class="font-weight-bold ui-g-1">CPF/CNPJ:</label>
+          <span class="ui-g-5">{{agendamento.vistoria?.cpfCnpj | cpfCnpj}}</span>
+        </div>
+        <div class="row col-12" *ngIf="agendamento.vistoria?.telefoneCliente">
+          <label class="font-weight-bold ui-g-1">Telefone:</label>
+          <span class="ui-g-5">{{agendamento.vistoria?.telefoneCliente}}</span>
+        </div>
+      </p-fieldset>
+      <p-fieldset>
+        <p-header>Dados do Corretor</p-header>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-1">Corretor:</label>
+          <span class="ui-g-10">{{agendamento.vistoria?.corretor?.idCorretor}} {{agendamento.vistoria?.corretor?.nomeCorretor}}</span>
+        </div>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-1">Telefone:</label>
+          <span class="ui-g-5" *ngFor="let t of agendamento.vistoria?.corretor?.telefones; let i = index"
+            [ngClass]="{'ui-g-offset-2': i > 0}">{{t.ddd}} {{t.telefone}}</span>
+          <label class="font-weight-bold ui-g-1">E-mail:</label>
+          <span class="ui-g-5" *ngFor="let email of agendamento.vistoria?.corretor?.emails; let i = index"
+            [ngClass]="{'ui-g-offset-2': i > 0}">{{email}}</span>
+        </div>
+      </p-fieldset>
+      <p-fieldset>
+        <p-header>Dados do Veículo</p-header>
+        <div class="row col-12">
+          <div class="ui-g-2">
+            <label class="label">Produto:</label>
+            <span class="d-block">{{agendamento.vistoria?.tipoVeiculo?.descricao}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Fabricante:</label>
+            <span class="d-block">{{agendamento.vistoria?.nomeFabricante}}</span>
+          </div>
+          <div class="ui-g-4">
+            <label class="label">Modelo Veículo:</label>
+            <span class="d-block">{{agendamento.vistoria?.nomeModelo}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Cod. FIPE:</label>
+            <span class="d-block">{{agendamento.vistoria?.fipe}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Zero KM.:</label>
+            <span class="d-block">{{agendamento.vistoria?.zeroKM ? 'Sim' : 'Não'}}</span>
+          </div>
+        </div>
+        <div class="row col-12">
+          <div class="ui-g-2">
+            <label class="label">Placa:</label>
+            <span class="d-block">{{agendamento.vistoria?.placa}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Chassi:</label>
+            <span class="d-block">{{agendamento.vistoria?.chassi}}</span>
+          </div>
+          <div class="ui-g-2">
+            <label class="label">Ano Modelo:</label>
+            <span class="d-block">{{agendamento.vistoria?.anoModelo}}</span>
+          </div>
+        </div>
+      </p-fieldset>
+      <p-fieldset>
+        <p-header>Dados da Vistoria</p-header>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-2">Dados da Vistoria:</label>
+          <span class="ui-g-2">{{agendamento?.tipo?.descricao}}</span>
+          <label class="font-weight-bold ui-g-2">Numero Voucher:</label>
+          <span class="ui-g-2">{{agendamento?.voucher}}</span>
+          <label class="font-weight-bold ui-g-2">Status:</label>
+          <span class="ui-g-2">{{agendamento?.status?.situacao.descricao}}</span>
+        </div>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-2">Solicitante:</label>
+          <span class="ui-g-2">{{agendamento?.statusPendente?.usuarioUltimaAlteracao}}</span>
+          <label class="font-weight-bold ui-g-2">Data Solicitação:</label>
+          <span
+            class="ui-g-2">{{agendamento?.statusPendente?.dataUltimaAlteracao | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+        </div>
+        <div
+          *ngIf="agendamento?.status?.situacao.valor == 'RLZ' || agendamento?.status?.situacao.valor == 'FIM'"
+          class="row col-12">
+          <label class="font-weight-bold ui-g-2">Parecer Vistoria:</label>
+          <span class="ui-g-2">{{agendamento?.statusPendente.usuarioUltimaAlteracao}}</span>
+          <label class="font-weight-bold ui-g-2">Data Realização:</label>
+          <span
+            class="ui-g-2">{{agendamento?.laudo?.DT_VSPRE | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+        </div>
+        <div *ngIf="agendamento?.status?.situacao.valor == 'CAN'" class="row col-12">
+          <label class="font-weight-bold ui-g-2">Solicitante Canc.:</label>
+          <span class="ui-g-2">{{agendamento?.statusCancelamento.usuarioUltimaAlteracao}}</span>
+          <label class="font-weight-bold ui-g-2">Data Cancelamento:</label>
+          <span
+            class="ui-g-2">{{agendamento?.statusCancelamento.dataUltimaAlteracao | date:'dd/MM/yyyy HH:mm:ss'}}</span>
+          <label class="font-weight-bold ui-g-2">Status Anterior:</label>
+          <span class="ui-g-2">{{agendamento?.statusAnteriorCancelamento}}</span>
+        </div>
+        <div class="row col-12">
+          <label class="font-weight-bold ui-g-2">Vistoriadora:</label>
+          <span class="ui-g-2">{{agendamento?.prestadora?.razaoSocial}}</span>
+          <label class="font-weight-bold ui-g-2">Telefone:</label>
+          <ng-template [ngIf]="agendamento?.tipo?.codigo == 'M'" [ngIfElse]="telefonePrestadora">
+            <span class="ui-g-2" *ngFor="let t of agendamento?.telefones; let i = index"
+                [ngClass]="{'ui-g-offset-2': i > 0}">{{t.ddd}} {{t.telefone}}</span>
+          </ng-template>
+          <ng-template #telefonePrestadora>
+            <span class="ui-g-2">{{agendamento?.prestadora?.dddTelefone}}
+              {{agendamento?.prestadora?.telefoneComercial}}</span>
+          </ng-template>
+        </div>
+        <div class="row col-12" *ngIf="agendamento?.status?.situacao.valor == 'CAN'">
+          <label class="font-weight-bold ui-g-2">Motivo:</label>
+          <span class="ui-g-10">{{agendamento?.statusCancelamento.descricaoMotivo}} </span>  
+        </div>
+        <ng-template [ngIf]="agendamento?.tipo?.codigo == 'D'">
+          <p-fieldset>
+            <p-header>
+              Local Realização Vistoria</p-header>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">CEP:</label>
+              <span class="ui-g-2">{{agendamento?.agendamentoDomicilio.cep | cep}}</span>
+              <label class="font-weight-bold ui-g-2">Endereço:</label>
+              <span class="ui-g-6">{{agendamento?.agendamentoDomicilio.logradouro}},
+                {{agendamento?.agendamentoDomicilio.numeroLogradouro}}</span>
+            </div>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">Bairro:</label>
+              <span class="ui-g-2">{{agendamento?.agendamentoDomicilio.bairro}}</span>
+              <label class="font-weight-bold ui-g-2">Cidade:</label>
+              <span class="ui-g-4">{{agendamento?.agendamentoDomicilio.cidade}}</span>
+              <label class="font-weight-bold ui-g-1">UF:</label>
+              <span class="ui-g-1">{{agendamento?.agendamentoDomicilio.uf}}</span>
+            </div>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">Complemento:</label>
+              <span class="ui-g-2">{{agendamento?.agendamentoDomicilio.complemento}}</span>
+            </div>
+          </p-fieldset>
+          <div class="row col-12 mt-3">
+            <label class="font-weight-bold ui-g-3">Data Prevista Realização:</label>
+            <span class="ui-g-3">{{agendamento?.agendamentoDomicilio.dataVistoria | date:'dd/MM/yyyy'}}</span>
+            <label class="font-weight-bold ui-g-3">Periodo Vistoria:</label>
+            <span class="ui-g-3">{{agendamento?.agendamentoDomicilio.periodoVistoria.descricao}}</span>
+          </div>
+          <div class="row col-12">
+            <label class="font-weight-bold ui-g-2">Nome Contato:</label>
+            <span class="ui-g-10">{{agendamento?.contato}}</span>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <label class="font-weight-bold ui-g-2">Telefone:</label>
+              <span class="ui-g-10" *ngFor="let t of agendamento?.telefones; let i = index"
+                [ngClass]="{'ui-g-offset-2': i > 0}">{{t.ddd}} {{t.telefone}}</span>
+            </div>
+            <div class="col-6">
+              <label class="font-weight-bold ui-g-2">E-mail:</label>
+              <span class="ui-g-10" *ngFor="let email of agendamento?.emails; let i = index"
+                [ngClass]="{'ui-g-offset-2': i > 0}">{{email}}</span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="agendamento?.tipo?.codigo == 'P'">
+          <p-fieldset>
+            <p-header>
+              Local Realização Vistoria</p-header>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">Nome do Posto:</label>
+              <span class="ui-g-6">{{agendamento?.posto?.nome}}</span>
+              <label class="font-weight-bold ui-g-2">Telefone:</label>
+              <span class="ui-g-2">{{agendamento?.posto?.telefone}}</span>
+            </div>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">CEP:</label>
+              <span class="ui-g-2">{{agendamento?.posto?.cep | cep}}</span>
+              <label class="font-weight-bold ui-g-2">Endereço:</label>
+              <span class="ui-g-6">{{agendamento?.posto?.logradouro}}</span>
+            </div>
+            <div class="row col-12">
+              <label class="font-weight-bold ui-g-2">Bairro:</label>
+              <span class="ui-g-2">{{agendamento?.posto?.bairro}}</span>
+              <label class="font-weight-bold ui-g-2">Cidade:</label>
+              <span class="ui-g-4">{{agendamento?.posto?.cidade}}</span>
+              <label class="font-weight-bold ui-g-1">UF:</label>
+              <span class="ui-g-1">{{agendamento?.posto?.uf}}</span>
+            </div>
+          </p-fieldset>
+        </ng-template>
+      </p-fieldset>
+    </div>
+  </div>
+</p-panel>

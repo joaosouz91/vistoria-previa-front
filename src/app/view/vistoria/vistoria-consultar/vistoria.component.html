@@ -1,0 +1,259 @@
+<p-dialog header="Motivo Cancelamento" [(visible)]="displayMotivoCancelamento" [modal]="true" [responsive]="true"
+  [style]="{width: '500px'}" appendTo="body" position="top">
+  <ng-template ngFor let-m [ngForOf]="motivosCancelamento">
+    <p class="mt-2 mb-2">
+      <p-radioButton name="motivoCancelamento" value="{{m.valor}}" label="{{m.descricaoCompleta}}"
+        [(ngModel)]="motivoCancelamento"></p-radioButton>
+    </p>
+  </ng-template>
+  <hr />
+  <p-fieldset>
+    <p-header>Observação sobre o cancelamento</p-header>
+    <div class="mb-2">
+      {{observacaoCancelamento}}
+    </div>
+  </p-fieldset>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="cancelar()" label="Confirmar"></button>
+    <button type="button" pButton icon="pi pi-times" (click)="displayMotivoCancelamento=false" label="Voltar"
+      class="p-button-secondary"></button>
+  </p-footer>
+</p-dialog>
+<p-panel>
+  <p-header><b>Agendamento On-line</b></p-header>
+  <div class="p-grid">
+    <div class="p-col-4">
+      <p-fieldset>
+        <p-header>Consulta de Agendamentos</p-header>
+        <div class="p-grid" *ngIf="usuario?.web == false">
+          <label for="codigoCorretor" class="label-5">Código Corretor:</label>
+          <div class="p-col">
+            <input id="codigoCorretor" type="text" pInputText pKeyFilter="pint" maxlength="6"
+              [(ngModel)]="filtro.corretor" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="situacao" class="label-5">Situação Agendamento:</label>
+          <div class="p-col">
+            <p-dropdown id="situacao" [options]="situacoes" [(ngModel)]="filtro.situacao" styleClass="w-100">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="cpfCnpj" class="label-5">Cpf/Cnpj Cliente:</label>
+          <div class="p-col">
+            <p-inputCpfCnpj id="cpfCnpj" type="text" [(ngModel)]="filtro.cpfCnpj"></p-inputCpfCnpj>
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="voucher" class="label-5">Número Voucher:</label>
+          <div class="p-col">
+            <input id="voucher" type="text" pInputText pKeyFilter="alphanum" maxlength="20" [(ngModel)]="filtro.voucher"
+              style="text-transform: uppercase;" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="placa" class="label-5">Placa:</label>
+          <div class="p-col">
+            <input id="placa" type="text" pInputText maxlength="7" [(ngModel)]="filtro.placa"
+              style="text-transform: uppercase;" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="chassi" class="label-5">Chassi:</label>
+          <div class="p-col">
+            <input id="chassi" type="text" pInputText pKeyFilter="alphanum" maxlength="20" [(ngModel)]="filtro.chassi"
+              style="text-transform: uppercase;" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="codigoNegocio" class="label-5">Código Negócio:</label>
+          <div class="p-col">
+            <input id="codigoNegocio" type="text" pInputText pKeyFilter="pint" maxlength="38"
+              [(ngModel)]="filtro.negocio" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="numeroItem" class="label-5">Número Item:</label>
+          <div class="p-col">
+            <input id="numeroItem" type="text" pInputText pKeyFilter="pint" maxlength="38" [(ngModel)]="filtro.item" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="codigoEndosso" class="label-5">Código Endosso:</label>
+          <div class="p-col">
+            <input id="codigoEndosso" type="text" pInputText pKeyFilter="pint" maxlength="38"
+              [(ngModel)]="filtro.endosso" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="numeroCalculo" class="label-5">Número Cálculo:</label>
+          <div class="p-col">
+            <input id="numeroCalculo" type="text" pInputText pKeyFilter="pint" maxlength="9"
+              [(ngModel)]="filtro.calculo" />
+          </div>
+        </div>
+        <div class="p-grid">
+          <label for="periodo" class="label-5">Período Pesquisa:</label>
+          <div class="p-col">
+            <p-calendar id="periodo" selectionMode="range" [readonlyInput]="true" [showIcon]="true" showButtonBar="true"
+              dateFormat="dd/mm/yy" [(ngModel)]="periodo"></p-calendar>
+          </div>
+        </div>
+      </p-fieldset>
+    </div>
+    <div class="p-col">
+      <table class="table table-bordered table-sm table-situacao" style="margin-top: 15px;">
+        <thead class="thead-light">
+          <tr>
+            <th style="width: 170px;">Situação do Agendamento</th>
+            <th>Vistoria Convencional (realizada por prestadores)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Agendar</th>
+            <td>Vistoria pendente de agendamento, após ter efetivado e/ou transmitido a proposta</td>
+          </tr>
+          <tr>
+            <th>Aguardando Confirmação</th>
+            <td>Agendamento realizado, aguardando confirmação do prestador, para data e período solicitados</td>
+          </tr>
+          <tr>
+            <th>Agendada</th>
+            <td>Agendamento confirmado pelo prestador, para realização na data e período solicitados</td>
+          </tr>
+          <tr>
+            <th>Reagendada</th>
+            <td>Vistoria reagendada para outra data, devido indisponibilidade prestador/cliente</td>
+          </tr>
+          <tr>
+            <th>Reagendar</th>
+            <td>Agendamento inicial cancelado e/ou frustrado</td>
+          </tr>
+          <tr>
+            <th>Cancelada</th>
+            <td>Agendamento cancelado pelo prestador / colaborador a pedido do corretor / recusa da proposta</td>
+          </tr>
+          <tr>
+            <th>Frustrada</th>
+            <td>Vistoriador compareceu ao local e devido à ausência do segurado/veículo ou doc. a vistoria não ocorreu. (reagendar)</td>
+          </tr>
+          <tr>
+            <th>Realizada</th>
+            <td>Vistoria transmitida para Cia.</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-bordered table-sm table-situacao">
+        <thead class="thead-light">
+          <tr>
+            <th style="width: 170px;">Situação do Agendamento</th>
+            <th>Vistoria Digital</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Agendar</th>
+            <td>Vistoria pendente de agendamento, após ter efetivado e/ou transmitido a proposta</td>
+          </tr>
+          <tr>
+            <th>Aguardando Confirmação</th>
+            <td>Agendamento realizado, será enviado Link ao cliente e recepção das fotos</td>
+          </tr>
+          <tr>
+            <th>Fotos Recepcionadas</th>
+            <td>Fotos recebidas (em processo de análise)</td>
+          </tr>
+          <tr>
+            <th>Pendente de Novas Fotos</th>
+            <td>Foram solicitadas novas fotos ao cliente (através de novo link) para conclusão da análise</td>
+          </tr>
+          <tr>
+            <th>Link Expirado</th>
+            <td>As fotos não foram envidas dentro do prazo (Favor solicitar o cancelamento para sucursal e reagendar)</td>
+          </tr>
+          <tr>
+            <th>Cancelada</th>
+            <td>Agendamento cancelado por colaborador a pedido do corretor / recusa da proposta (reagendar conforme situação)</td>
+          </tr>
+          <tr>
+            <th>Realizada</th>
+            <td>Vistoria transmitida para Cia.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col">
+      <div class="text-right mt-2">
+        <button type="button" pButton icon="pi pi-search" class="p-button-raised p-button-secondary" label="Pesquisar"
+          (click)="pesquisar()" style="width: initial"></button>
+      </div>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col">
+      <p-table #dt [value]="vistorias" [responsive]="true" [paginator]="true" [rows]="10" class="m-5"
+        [globalFilterFields]="['codCorretor','tipoVeiculo.descricao', 'nomeCliente', 'nomeModelo', 'placa', 'chassi', 'agendamento.voucher']"
+        [rowsPerPageOptions]="[10, 20, 50]" [autoLayout]="true">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input type="text" pInputText size="50" placeholder="Pesquisar"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Corretor</th>
+            <th>Produto</th>
+            <th>Cliente</th>
+            <th>Item</th>
+            <th>Placa</th>
+            <th>Chassi</th>
+            <th>Voucher</th>
+            <th>Tipo Vistoria</th>
+            <th>Situação</th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.codCorretor }}</td>
+            <td>{{ item.tipoVeiculo.descricao }}</td>
+            <td>{{ item.nomeCliente }}</td>
+            <td>{{ item.nomeModelo }}</td>
+            <td>{{ item.placa }}</td>
+            <td>{{ item.chassi }}</td>
+            <td>{{ item?.agendamento?.voucher }}</td>
+            <td>{{ item?.agendamento?.tipo.descricao }}</td>
+            <td>{{ item?.agendamento?.status?.situacao ? item?.agendamento?.status?.situacao?.descricao : 'Agendar' }}
+              <ng-template ngFor let-i [ngForOf]="item.links">
+                <div *ngIf="i.title == 'agendar' && item?.agendamento?.status?.situacao.valor == 'CAN'"
+                  class="text-danger" tooltipStyleClass="p-tooltip-100" tooltipPosition="left"
+                  pTooltip="{{item?.agendamento?.status?.descricaoMotivoSituacao}}">(Reagendar)
+                </div>
+              </ng-template>
+            </td>
+            <td>
+              <ng-template ngFor let-i [ngForOf]="item.links">
+                <button *ngIf="i.title == 'visualizar'" type="button" pButton class="p-button-secondary m-1"
+                  title="Visualizar" icon="pi pi-search" (click)="visualizar(item)"></button>
+                <button *ngIf="i.title == 'agendar'  " type="button" pButton class="p-button-secondary m-1"
+                  title="Agendar" icon="pi pi-calendar" (click)="agendar(item)"></button>
+                <button *ngIf="i.title == 'cancelar'" type="button" pButton class="p-button-secondary m-1"
+                  title="Cancelar" icon="pi pi-times" (click)="confirmarCancelamento(item)"></button>
+              </ng-template>
+              <div *ngIf="item.links.length ==  0">
+                <button type="button" pButton class="p-button-secondary m-1" title="Agendar" icon="pi pi-calendar"
+                  (click)="saveVistoria(item)"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</p-panel>
